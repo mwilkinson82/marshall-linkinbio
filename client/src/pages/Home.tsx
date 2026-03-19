@@ -103,7 +103,6 @@ const freeResources = [
 ];
 
 export default function Home() {
-
   return (
     <div className="relative min-h-screen overflow-x-hidden no-scrollbar grain-overlay">
       {/* Animated gradient bar at very top */}
