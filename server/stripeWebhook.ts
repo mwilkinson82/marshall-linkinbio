@@ -2,6 +2,7 @@ import express, { type Express, type Request, type Response } from "express";
 import Stripe from "stripe";
 import { stripe } from "./stripe";
 import { notifyOwner } from "./_core/notification";
+import { sendWelcomeEmail } from "./email";
 
 /**
  * Register the Stripe webhook endpoint.
@@ -51,11 +52,33 @@ export function registerStripeWebhook(app: Express) {
             console.log(
               `[Stripe Webhook] Checkout completed — session: ${session.id}, customer: ${session.customer}, email: ${session.customer_email}`
             );
+            // Send welcome email to new member
+            const memberEmail = session.customer_email || session.customer_details?.email;
+            const memberName = session.metadata?.customer_name || session.customer_details?.name || "New Member";
+
+            if (memberEmail) {
+              try {
+                const emailResult = await sendWelcomeEmail({
+                  to: memberEmail,
+                  name: memberName,
+                });
+                if (emailResult.success) {
+                  console.log(`[Stripe Webhook] Welcome email sent to ${memberEmail}`);
+                } else {
+                  console.warn(`[Stripe Webhook] Welcome email failed: ${emailResult.error}`);
+                }
+              } catch (err) {
+                console.warn("[Stripe Webhook] Failed to send welcome email:", err);
+              }
+            } else {
+              console.warn("[Stripe Webhook] No email found on checkout session — skipping welcome email");
+            }
+
             // Notify Marshall of new member
             try {
               await notifyOwner({
                 title: "🎉 New Contracting Circle Member!",
-                content: `New founding member just subscribed!\n\nEmail: ${session.customer_email || "N/A"}\nName: ${session.metadata?.customer_name || "N/A"}\nSession: ${session.id}\nAmount: $497/mo\n\nWelcome them to the Discord community!`,
+                content: `New founding member just subscribed!\n\nEmail: ${memberEmail || "N/A"}\nName: ${memberName}\nSession: ${session.id}\nAmount: $497/mo\nWelcome email: ${memberEmail ? "sent" : "skipped (no email)"}\n\nWelcome them to the Discord community!`,
               });
             } catch (err) {
               console.warn("[Stripe Webhook] Failed to send owner notification:", err);

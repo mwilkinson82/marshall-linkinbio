@@ -33,15 +33,22 @@
 - [x] Set up Stripe webhook handler for subscription events
 - [x] Connect all CTA buttons on /circle to trigger Stripe checkout
 - [x] Test Stripe checkout flow end-to-end (vitest passed)
-- [ ] Deploy with Stripe integration live
+- [x] Deploy with Stripe integration live
 - [x] Build cinematic animated success/welcome page at /circle/welcome
 - [x] Confetti/particle celebration animation on page load
 - [x] "Welcome to The Circle" messaging with next steps
 - [x] Mention welcome email is coming
 - [x] Discord community link/CTA
-- [ ] Build welcome email triggered on successful Stripe payment
+- [x] Build welcome email triggered on successful Stripe payment
 - [x] Wire Stripe checkout success_url to /circle/welcome
 - [x] Test full checkout-to-welcome flow end-to-end (9/9 vitest tests passing)
 - [x] Add tRPC verifyCheckout endpoint for personalized welcome page
 - [x] Add owner notification on new member subscription via webhook
 - [x] Personalized greeting on welcome page when session_id is present
+- [x] Set up Resend API key as environment secret
+- [x] Install Resend SDK
+- [x] Build branded welcome email template (HTML)
+- [x] Create email sending helper function
+- [x] Wire welcome email into Stripe webhook on checkout.session.completed
+- [x] Write vitest tests for email integration (14 tests passing)
+- [x] Test end-to-end email delivery (sent to delivered@resend.dev)
