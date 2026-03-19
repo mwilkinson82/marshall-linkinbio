@@ -6,8 +6,7 @@
  * ambient glow effects, Sora + DM Sans typography.
  */
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { HeroSection } from "@/components/HeroSection";
 import { ProductCard } from "@/components/ProductCard";
 import { AmbientBackground } from "@/components/AmbientBackground";
@@ -70,12 +69,9 @@ const products = [
 ];
 
 export default function Home() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
-  const isCardsInView = useInView(cardsRef, { once: true, margin: "-50px" });
 
   return (
-    <div ref={containerRef} className="relative min-h-screen overflow-x-hidden no-scrollbar grain-overlay">
+    <div className="relative min-h-screen overflow-x-hidden no-scrollbar grain-overlay">
       {/* Animated gradient bar at very top */}
       <GradientBar />
 
@@ -106,13 +102,12 @@ export default function Home() {
           </motion.div>
 
           {/* Product Cards */}
-          <div ref={cardsRef} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             {products.map((product, index) => (
               <ProductCard
                 key={product.title}
                 {...product}
                 index={index}
-                isInView={isCardsInView}
               />
             ))}
           </div>
