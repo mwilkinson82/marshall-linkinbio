@@ -20,3 +20,11 @@
 - [x] Final CTA with urgency copy
 - [x] Update link-in-bio card from Coming Soon to live /circle link
 - [x] Fix $5B+ references to $2.5B+
+- [x] Darken hero gradient overlay for better text readability
+- [x] Pull correct testimonials from bottom of altitudelogicpressure.com (video embed + updated text)
+- [x] Upgrade animations to cinematic quality — text splitting, parallax cards, staggered reveals
+- [ ] Build member portal with Discord OAuth login
+- [ ] Member dashboard with subscription status
+- [ ] Replay library page for recorded calls/bootcamps
+- [ ] Template downloads page
+- [ ] Account/subscription management

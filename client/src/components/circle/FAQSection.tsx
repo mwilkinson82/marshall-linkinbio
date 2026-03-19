@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     question: "What's in the template library?",
-    answer: "Battle-tested SOPs, contracts, estimating spreadsheets, operational checklists, and more — built from $5B+ in real-world execution. These aren't generic downloads. They're the actual documents used in high-performing contracting operations.",
+    answer: "Battle-tested SOPs, contracts, estimating spreadsheets, operational checklists, and more — built from $2.5B+ in real-world execution. These aren't generic downloads. They're the actual documents used in high-performing contracting operations.",
   },
   {
     question: "How does the Discord community work?",
