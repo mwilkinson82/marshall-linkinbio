@@ -9,4 +9,4 @@
 - [x] Rewrite Private Advisory as application-based (no price, Apply badge)
 - [x] Add Free Resources section with 3 lead magnets
 - [x] Clean up unnecessary backend/Stripe files
-- [ ] Final polish and publish to live URL
+- [x] Final polish and publish to live URL
