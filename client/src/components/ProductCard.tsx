@@ -9,16 +9,19 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { BookOpen, Target, GraduationCap, Users, FileText, Gem, ArrowUpRight, Lock } from "lucide-react";
+import { BookOpen, Target, GraduationCap, Users, FileText, Gem, ArrowUpRight, Lock, Download, Gift, ClipboardList, BarChart3, Send } from "lucide-react";
 
 interface ProductCardProps {
   title: string;
   price: string;
   description: string;
   link: string;
-  icon: "book" | "target" | "graduation" | "circle" | "file" | "diamond";
+  icon: "book" | "target" | "graduation" | "circle" | "file" | "diamond" | "download" | "gift" | "clipboard" | "chart" | "send";
   iconImage?: string;
   comingSoon?: boolean;
+  badge?: string;
+  isFree?: boolean;
+  isApplication?: boolean;
   index: number;
 }
 
@@ -29,6 +32,11 @@ const iconMap = {
   circle: Users,
   file: FileText,
   diamond: Gem,
+  download: Download,
+  gift: Gift,
+  clipboard: ClipboardList,
+  chart: BarChart3,
+  send: Send,
 };
 
 export function ProductCard({
@@ -39,6 +47,9 @@ export function ProductCard({
   icon,
   iconImage,
   comingSoon = false,
+  badge,
+  isFree = false,
+  isApplication = false,
   index,
 }: ProductCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -119,6 +130,21 @@ export function ProductCard({
                 Soon
               </span>
             )}
+            {badge && !comingSoon && (
+              <span className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
+                isFree 
+                  ? 'bg-emerald-500/15 border border-emerald-500/25 text-emerald-400'
+                  : isApplication
+                    ? 'bg-sky-500/15 border border-sky-500/25 text-sky-400'
+                    : 'bg-ember/10 border border-ember/20 text-ember'
+              }`}
+                style={{ fontFamily: "'Sora', sans-serif" }}
+              >
+                {isFree && <Gift className="w-2.5 h-2.5" />}
+                {isApplication && <Send className="w-2.5 h-2.5" />}
+                {badge}
+              </span>
+            )}
           </div>
           <p className="text-[13px] sm:text-sm text-cream-muted/80 leading-snug line-clamp-2">
             {description}
@@ -129,7 +155,9 @@ export function ProductCard({
         <div className="flex-shrink-0 flex flex-col items-end gap-1">
           {price && (
             <span
-              className="text-sm sm:text-base font-bold text-ember whitespace-nowrap"
+              className={`text-sm sm:text-base font-bold whitespace-nowrap ${
+                isFree ? 'text-emerald-400' : 'text-ember'
+              }`}
               style={{ fontFamily: "'Sora', sans-serif" }}
             >
               {price}

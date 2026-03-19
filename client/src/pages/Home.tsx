@@ -36,7 +36,7 @@ const products = [
   },
   {
     title: "ALP Classes",
-    price: "$500/mo",
+    price: "$497/mo",
     description: "Power Hour | Contractor School | Sales & Marketing School",
     link: "https://altitudelogicpressure.com",
     icon: "graduation" as const,
@@ -60,11 +60,45 @@ const products = [
   },
   {
     title: "ALP Private Advisory",
-    price: "Starting at $1,000",
-    description: "1-on-1 strategic consulting",
+    price: "",
+    description: "Fully confidential 1-on-1 strategic consulting with Marshall",
     link: "https://altitudelogicpressure.com",
     icon: "diamond" as const,
     iconImage: "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/card_icon_advisory-F95cG7yKhuZ2ETbBtKcwe9.webp",
+    badge: "Apply",
+    isApplication: true,
+  },
+];
+
+const freeResources = [
+  {
+    title: "15 Strategic Sales Questions",
+    price: "FREE",
+    description: "The discovery framework for closing high-ticket outdoor living projects",
+    link: "https://alpsalestraining.com/fifteenquestions",
+    icon: "download" as const,
+    badge: "Free",
+    isFree: true,
+  },
+  {
+    title: "5 Closing Mistakes Costing You $100K+",
+    price: "FREE",
+    description: "The sales errors killing your close rate — and how to fix them",
+    link: "#",
+    icon: "chart" as const,
+    badge: "Free",
+    isFree: true,
+    comingSoon: true,
+  },
+  {
+    title: "The Contractor's Scaling Checklist",
+    price: "FREE",
+    description: "Systems, hiring & margins — the ops playbook for growth",
+    link: "#",
+    icon: "clipboard" as const,
+    badge: "Free",
+    isFree: true,
+    comingSoon: true,
   },
 ];
 
@@ -85,7 +119,7 @@ export default function Home() {
       <SectionDivider />
 
       {/* Products Section */}
-      <section className="relative z-10 px-4 sm:px-6 pb-8 pt-4">
+      <section className="relative z-10 px-4 sm:px-6 pb-6 pt-4">
         <div className="max-w-md mx-auto">
           {/* Section Header */}
           <motion.div
@@ -107,6 +141,36 @@ export default function Home() {
               <ProductCard
                 key={product.title}
                 {...product}
+                index={index}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Free Resources Section */}
+      <section className="relative z-10 px-4 sm:px-6 pb-8 pt-2">
+        <div className="max-w-md mx-auto">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-30px" }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-8"
+          >
+            <p className="text-sm font-medium tracking-[0.2em] uppercase text-ember mb-2" style={{ fontFamily: "'Sora', sans-serif" }}>
+              Free Resources
+            </p>
+            <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-ember to-transparent mx-auto" />
+          </motion.div>
+
+          {/* Free Resource Cards */}
+          <div className="flex flex-col gap-4">
+            {freeResources.map((resource, index) => (
+              <ProductCard
+                key={resource.title}
+                {...resource}
                 index={index}
               />
             ))}
