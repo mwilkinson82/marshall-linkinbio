@@ -9,9 +9,8 @@ if (!resendApiKey) {
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 // ─── From address ─────────────────────────────────────────────────────────
-// Resend allows sending from onboarding@resend.dev for testing.
-// Once Marshall verifies a custom domain in Resend, update this.
-const FROM_ADDRESS = "The Contracting Circle <onboarding@resend.dev>";
+// Using Marshall's verified domain for branded email delivery.
+const FROM_ADDRESS = "Marshall Wilkinson | ALP <welcome@notifications.marshallwilkinson.com>";
 
 // ─── Welcome Email Template ──────────────────────────────────────────────
 function buildWelcomeEmailHtml(params: { name: string }): string {

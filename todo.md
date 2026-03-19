@@ -52,3 +52,4 @@
 - [x] Wire welcome email into Stripe webhook on checkout.session.completed
 - [x] Write vitest tests for email integration (14 tests passing)
 - [x] Test end-to-end email delivery (sent to delivered@resend.dev)
+- [x] Update email from address to notifications.marshallwilkinson.com verified domain
