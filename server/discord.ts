@@ -200,7 +200,10 @@ export function registerDiscordOAuthRoutes(app: Express) {
    *   - returnPath: where to redirect after login (default: /portal)
    */
   app.get("/api/discord/login", (req: Request, res: Response) => {
-    const origin = (req.query.origin as string) || req.headers.origin || req.headers.referer?.replace(/\/$/, "") || "";
+    // Always use the production domain for the redirect URI so it matches
+    // what is registered in the Discord Developer Portal exactly.
+    const PRODUCTION_ORIGIN = "https://marshallbio-f8shs44h.manus.space";
+    const origin = PRODUCTION_ORIGIN;
     const returnPath = (req.query.returnPath as string) || "/portal";
     const redirectUri = `${origin}/api/discord/callback`;
 
