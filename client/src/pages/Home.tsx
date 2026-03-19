@@ -46,9 +46,8 @@ const products = [
     title: "The Contracting Circle",
     price: "$497/mo",
     description: "Elite contractor community & execution engine",
-    link: "#",
+    link: "/circle",
     icon: "circle" as const,
-    comingSoon: true,
   },
   {
     title: "ALP Contracting Templates",

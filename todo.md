@@ -10,3 +10,13 @@
 - [x] Add Free Resources section with 3 lead magnets
 - [x] Clean up unnecessary backend/Stripe files
 - [x] Final polish and publish to live URL
+- [x] Build Contracting Circle sales page at /circle route
+- [x] Hero section with founding members badge and parallax
+- [x] Stats section ($2.5B+, 1,000+ Contractors, Daily)
+- [x] What's Included section with 6 feature cards
+- [x] Testimonials section with 4 real testimonials from ALP site
+- [x] Pricing section ($497/mo, founding member angle)
+- [x] FAQ section with 8 accordion questions
+- [x] Final CTA with urgency copy
+- [x] Update link-in-bio card from Coming Soon to live /circle link
+- [x] Fix $5B+ references to $2.5B+
