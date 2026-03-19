@@ -14,7 +14,7 @@ describe("Welcome Email Template - HTML", () => {
 
   it("includes the Discord invite link", () => {
     const html = buildWelcomeEmailHtml({ name: "Test User" });
-    expect(html).toContain("https://discord.gg/KqTNKMak");
+    expect(html).toContain("https://discord.gg/TFSN7YPRWD");
   });
 
   it("includes the Founding Member badge", () => {
@@ -68,7 +68,7 @@ describe("Welcome Email Template - Plain Text", () => {
 
   it("includes the Discord link", () => {
     const text = buildWelcomeEmailText({ name: "Test" });
-    expect(text).toContain("https://discord.gg/KqTNKMak");
+    expect(text).toContain("https://discord.gg/TFSN7YPRWD");
   });
 
   it("includes all three steps", () => {

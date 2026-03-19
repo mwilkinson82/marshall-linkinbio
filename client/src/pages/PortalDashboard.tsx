@@ -17,7 +17,7 @@ import {
   Zap,
 } from "lucide-react";
 
-const DISCORD_INVITE = "https://discord.gg/thecontractingcircle";
+const DISCORD_INVITE = "https://discord.gg/TFSN7YPRWD";
 
 function StatusBadge({ status }: { status: string }) {
   const config: Record<string, { color: string; bg: string; label: string; icon: any }> = {

@@ -66,3 +66,4 @@
 - [ ] Test full Discord login flow end-to-end (requires manual browser test)
 - [x] Fix Discord OAuth redirect_uri to use hardcoded production domain
 - [x] Publish site publicly
+- [x] Update Discord invite link to https://discord.gg/TFSN7YPRWD across all pages

@@ -99,7 +99,7 @@ function buildWelcomeEmailHtml(params: { name: string }): string {
                     <p style="color:rgba(237,230,219,0.6);font-size:14px;line-height:1.6;margin:0 0 16px 0;">
                       This is where the magic happens. Introduce yourself, connect with other serious contractors, and start building relationships that will accelerate your growth.
                     </p>
-                    <a href="https://discord.gg/KqTNKMak" style="display:inline-block;background-color:rgba(212,145,92,0.15);border:1px solid rgba(212,145,92,0.3);color:#D4915C;text-decoration:none;padding:10px 24px;border-radius:10px;font-size:14px;font-weight:600;">
+                    <a href="https://discord.gg/TFSN7YPRWD" style="display:inline-block;background-color:rgba(212,145,92,0.15);border:1px solid rgba(212,145,92,0.3);color:#D4915C;text-decoration:none;padding:10px 24px;border-radius:10px;font-size:14px;font-weight:600;">
                       Join Discord →
                     </a>
                   </td>
@@ -241,7 +241,7 @@ You just made a decision that will change the trajectory of your business. Here'
 
 STEP 1: Join the Discord Community
 This is where the magic happens. Introduce yourself, connect with other serious contractors, and start building relationships.
-→ Join Discord: https://discord.gg/KqTNKMak
+→ Join Discord: https://discord.gg/TFSN7YPRWD
 
 STEP 2: Mark Your Calendar
 Your first weekly group call is this Thursday evening. Come with questions, deals you're working, or challenges you're facing. Marshall and the community are here to help you win.
