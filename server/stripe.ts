@@ -101,7 +101,7 @@ export async function createCircleCheckoutSession(params: {
       },
     ],
     allow_promotion_codes: true,
-    success_url: `${params.origin}/circle?checkout=success`,
+    success_url: `${params.origin}/circle/welcome?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${params.origin}/circle?checkout=cancelled`,
     metadata: {
       product_key: "contracting_circle",

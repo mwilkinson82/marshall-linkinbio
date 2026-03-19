@@ -2,7 +2,8 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
-import { createCircleCheckoutSession } from "./stripe";
+import { createCircleCheckoutSession, stripe } from "./stripe";
+import { z } from "zod";
 
 export const appRouter = router({
   system: systemRouter,
@@ -35,6 +36,35 @@ export const appRouter = router({
 
       return { checkoutUrl };
     }),
+
+    /**
+     * Verify a completed checkout session and return customer details.
+     * Used by the welcome page to show personalized confirmation.
+     */
+    verifyCheckout: publicProcedure
+      .input(z.object({ sessionId: z.string() }))
+      .query(async ({ input }) => {
+        if (!stripe) {
+          return { verified: false, customerName: null, customerEmail: null };
+        }
+
+        try {
+          const session = await stripe.checkout.sessions.retrieve(input.sessionId);
+
+          if (session.payment_status !== "paid") {
+            return { verified: false, customerName: null, customerEmail: null };
+          }
+
+          return {
+            verified: true,
+            customerName: session.metadata?.customer_name || session.customer_details?.name || null,
+            customerEmail: session.customer_email || session.customer_details?.email || null,
+          };
+        } catch (err) {
+          console.warn("[Stripe] Failed to verify checkout session:", err);
+          return { verified: false, customerName: null, customerEmail: null };
+        }
+      }),
   }),
 });
 

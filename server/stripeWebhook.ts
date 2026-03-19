@@ -1,6 +1,7 @@
 import express, { type Express, type Request, type Response } from "express";
 import Stripe from "stripe";
 import { stripe } from "./stripe";
+import { notifyOwner } from "./_core/notification";
 
 /**
  * Register the Stripe webhook endpoint.
@@ -50,7 +51,15 @@ export function registerStripeWebhook(app: Express) {
             console.log(
               `[Stripe Webhook] Checkout completed — session: ${session.id}, customer: ${session.customer}, email: ${session.customer_email}`
             );
-            // Future: Grant Discord access, send welcome email, update member status
+            // Notify Marshall of new member
+            try {
+              await notifyOwner({
+                title: "🎉 New Contracting Circle Member!",
+                content: `New founding member just subscribed!\n\nEmail: ${session.customer_email || "N/A"}\nName: ${session.metadata?.customer_name || "N/A"}\nSession: ${session.id}\nAmount: $497/mo\n\nWelcome them to the Discord community!`,
+              });
+            } catch (err) {
+              console.warn("[Stripe Webhook] Failed to send owner notification:", err);
+            }
             break;
           }
 
