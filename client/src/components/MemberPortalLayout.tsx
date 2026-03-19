@@ -15,14 +15,16 @@ import {
   X,
   Crown,
   ChevronRight,
+  ShieldCheck,
 } from "lucide-react";
 import { useState } from "react";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/portal" },
-  { icon: PlayCircle, label: "Replay Library", path: "/portal/replays" },
-  { icon: FileDown, label: "Templates", path: "/portal/templates" },
-  { icon: Settings, label: "Account", path: "/portal/account" },
+  { icon: LayoutDashboard, label: "Dashboard", path: "/portal", adminOnly: false },
+  { icon: PlayCircle, label: "Replay Library", path: "/portal/replays", adminOnly: false },
+  { icon: FileDown, label: "Templates", path: "/portal/templates", adminOnly: false },
+  { icon: Settings, label: "Account", path: "/portal/account", adminOnly: false },
+  { icon: ShieldCheck, label: "Admin Panel", path: "/portal/admin", adminOnly: true },
 ];
 
 function MemberPortalSkeleton() {
@@ -90,9 +92,12 @@ export default function MemberPortalLayout({
         ? "Admin"
         : "Member";
 
-  const activeItem = menuItems.find(item =>
+  const isAdmin = member?.memberRole === "admin";
+  const visibleMenuItems = menuItems.filter(item => !item.adminOnly || isAdmin);
+
+  const activeItem = visibleMenuItems.find(item =>
     location === item.path || (item.path !== "/portal" && location.startsWith(item.path))
-  ) || menuItems[0];
+  ) || visibleMenuItems[0];
 
   return (
     <div className="min-h-screen bg-navy-deep flex">
@@ -118,7 +123,7 @@ export default function MemberPortalLayout({
 
           {/* Navigation */}
           <nav className="flex-1 p-3 space-y-1">
-            {menuItems.map(item => {
+            {visibleMenuItems.map(item => {
               const isActive = location === item.path || (item.path !== "/portal" && location.startsWith(item.path));
               return (
                 <button
@@ -190,7 +195,7 @@ export default function MemberPortalLayout({
         {isMobile && mobileMenuOpen && (
           <div className="fixed inset-0 z-40 bg-navy-deep/95 backdrop-blur-lg pt-14">
             <nav className="p-4 space-y-2">
-              {menuItems.map(item => {
+              {visibleMenuItems.map(item => {
                 const isActive = location === item.path || (item.path !== "/portal" && location.startsWith(item.path));
                 return (
                   <button

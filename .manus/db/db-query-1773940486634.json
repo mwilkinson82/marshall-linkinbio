@@ -1,0 +1,9 @@
+{
+  "query": "UPDATE members SET memberRole = 'admin' WHERE discordId = '927272166049865807';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 7EZSjjtPPBiui5U.root --database F8sHs44hWg957N49MHxas2 --execute UPDATE members SET memberRole = 'admin' WHERE discordId = '927272166049865807';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 415
+}

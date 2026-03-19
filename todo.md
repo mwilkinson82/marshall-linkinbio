@@ -102,3 +102,14 @@
 - All memberships currently in Kajabi; plan to migrate forward (not backward) to this platform
 - Stripe account is shared across multiple sites — webhook filtering is critical
 - Zoom recordings need to be manually downloaded and uploaded to Cloudflare Stream (no automation yet)
+
+## Admin Panel
+- [x] Add admin role field to members table and push migration
+- [x] Create adminProcedure (protectedProcedure + role === "admin" check)
+- [x] Add admin tRPC endpoints: addReplay, deleteReplay
+- [x] Build admin panel UI page at /portal/admin (only visible to admins)
+- [x] Add replay form: title, date, duration, category, Cloudflare Stream video ID, description
+- [x] Add edit/delete actions on each replay card in admin view
+- [x] Add admin nav item in sidebar (only shown to admin members)
+- [x] Promote Marshall's Discord account to admin in the database
+- [x] Write vitest tests for admin procedures (55 total tests passing)

@@ -1,0 +1,18 @@
+{
+  "query": "SELECT id, discordId, email, discordDisplayName, memberRole, subscriptionStatus FROM members LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 7EZSjjtPPBiui5U.root --database F8sHs44hWg957N49MHxas2 --execute SELECT id, discordId, email, discordDisplayName, memberRole, subscriptionStatus FROM members LIMIT 20;",
+  "rows": [
+    {
+      "id": "1",
+      "discordId": "927272166049865807",
+      "email": "mwilkinson@saxumcapital.com",
+      "discordDisplayName": "Marshall Wilkinson",
+      "memberRole": "member",
+      "subscriptionStatus": "none"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tdiscordId\temail\tdiscordDisplayName\tmemberRole\tsubscriptionStatus\n1\t927272166049865807\tmwilkinson@saxumcapital.com\tMarshall Wilkinson\tmember\tnone\n",
+  "stderr": "",
+  "execution_time_ms": 494
+}

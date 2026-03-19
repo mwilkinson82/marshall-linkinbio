@@ -1,0 +1,8 @@
+{
+  "query": "SELECT id, discord_id, email, discord_display_name, member_role, subscription_status FROM members LIMIT 20;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 7EZSjjtPPBiui5U.root --database F8sHs44hWg957N49MHxas2 --execute SELECT id, discord_id, email, discord_display_name, member_role, subscription_status FROM members LIMIT 20;",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'discord_id' in 'field list'"
+  ]
+}
