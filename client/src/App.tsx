@@ -7,13 +7,42 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import ContractingCircle from "./pages/ContractingCircle";
 import CircleWelcome from "./pages/CircleWelcome";
+import MemberPortalLayout from "./components/MemberPortalLayout";
+import PortalDashboard from "./pages/PortalDashboard";
+import PortalReplays from "./pages/PortalReplays";
+import PortalTemplates from "./pages/PortalTemplates";
+import PortalAccount from "./pages/PortalAccount";
 
 function Router() {
   return (
     <Switch>
+      {/* Public pages */}
       <Route path={"/"} component={Home} />
       <Route path={"/circle"} component={ContractingCircle} />
       <Route path={"/circle/welcome"} component={CircleWelcome} />
+
+      {/* Member portal (Discord auth) */}
+      <Route path="/portal">
+        <MemberPortalLayout>
+          <PortalDashboard />
+        </MemberPortalLayout>
+      </Route>
+      <Route path="/portal/replays">
+        <MemberPortalLayout>
+          <PortalReplays />
+        </MemberPortalLayout>
+      </Route>
+      <Route path="/portal/templates">
+        <MemberPortalLayout>
+          <PortalTemplates />
+        </MemberPortalLayout>
+      </Route>
+      <Route path="/portal/account">
+        <MemberPortalLayout>
+          <PortalAccount />
+        </MemberPortalLayout>
+      </Route>
+
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

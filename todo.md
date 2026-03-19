@@ -23,11 +23,11 @@
 - [x] Darken hero gradient overlay for better text readability
 - [x] Pull correct testimonials from bottom of altitudelogicpressure.com (video embed + updated text)
 - [x] Upgrade animations to cinematic quality — text splitting, parallax cards, staggered reveals
-- [ ] Build member portal with Discord OAuth login
-- [ ] Member dashboard with subscription status
-- [ ] Replay library page for recorded calls/bootcamps
-- [ ] Template downloads page
-- [ ] Account/subscription management
+- [x] Build member portal with Discord OAuth login
+- [x] Member dashboard with subscription status
+- [x] Replay library page for recorded calls/bootcamps
+- [x] Template downloads page
+- [x] Account/subscription management
 - [x] Create Stripe product/price config for $497/mo Contracting Circle
 - [x] Build checkout session tRPC endpoint
 - [x] Set up Stripe webhook handler for subscription events
@@ -53,3 +53,14 @@
 - [x] Write vitest tests for email integration (14 tests passing)
 - [x] Test end-to-end email delivery (sent to delivered@resend.dev)
 - [x] Update email from address to notifications.marshallwilkinson.com verified domain
+- [x] Set up Discord OAuth credentials (Client ID + Secret)
+- [x] Build Discord OAuth server-side auth flow (login, callback, session)
+- [x] Create member database schema (members table with Discord + Stripe info)
+- [x] Push database migrations
+- [x] Build member dashboard page with subscription status
+- [x] Build replay library page for recorded calls/bootcamps
+- [x] Build template downloads page
+- [x] Build account/subscription management page
+- [x] Wire Discord OAuth login into member portal with sidebar layout
+- [x] Write vitest tests for Discord OAuth and member features (39 total tests passing)
+- [ ] Test full Discord login flow end-to-end (requires manual browser test)

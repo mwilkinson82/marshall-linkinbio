@@ -3,6 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { createCircleCheckoutSession, stripe } from "./stripe";
+import { memberRouter } from "./memberRouter";
 import { z } from "zod";
 
 export const appRouter = router({
@@ -66,6 +67,8 @@ export const appRouter = router({
         }
       }),
   }),
+
+  member: memberRouter,
 });
 
 export type AppRouter = typeof appRouter;
