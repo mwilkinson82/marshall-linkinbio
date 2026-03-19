@@ -88,9 +88,9 @@
 - [x] Show next upcoming call date/time dynamically in the portal
 
 ### Priority 4 — Real Templates
-- [ ] Repurpose existing ALP templates (from outdoor living sales course) for the template library
-- [ ] Create additional contractor-specific templates
-- [ ] Add real download links to template library page
+- [x] Repurpose existing ALP templates (from outdoor living sales course) for the template library
+- [x] Create additional contractor-specific templates
+- [x] Add real download links to template library page
 
 ### Priority 5 — Future: Multi-Membership Expansion
 - [ ] Evaluate duplicating this portal for: Contractor School, Sales & Marketing School, Power Hour, ALP University
@@ -113,3 +113,15 @@
 - [x] Add admin nav item in sidebar (only shown to admin members)
 - [x] Promote Marshall's Discord account to admin in the database
 - [x] Write vitest tests for admin procedures (55 total tests passing)
+
+## Template Library
+- [x] Read all source materials (Google Docs, ALP Sales Deck, PM Presentation, PM Spreadsheet)
+- [x] Write Proposal Template (Word doc)
+- [x] Write Contract Template (Word doc)
+- [x] Write Follow-up Email Scripts (Authority Gap lens)
+- [x] Write Objection Reframing Guide (guide to next decision)
+- [x] Build Bid Sheet & Estimating Template (robust Excel spreadsheet)
+- [x] Upload PM Presentation PDF to CDN
+- [x] Upload PM Systems Spreadsheet to CDN
+- [x] Upload all templates to CDN
+- [x] Wire all templates into portal Templates page with real download links
