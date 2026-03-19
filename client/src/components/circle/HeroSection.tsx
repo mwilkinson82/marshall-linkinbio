@@ -1,6 +1,7 @@
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { Users, ArrowDown, Zap } from "lucide-react";
+import { ArrowDown, Zap, Loader2 } from "lucide-react";
+import { useCircleCheckout } from "@/hooks/useCircleCheckout";
 
 const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/marshall_hero_6c478c8c.webp";
 
@@ -29,22 +30,9 @@ function AnimatedWords({ text, className, delay = 0, style }: { text: string; cl
   );
 }
 
-// Animated counter for stats
-function AnimatedCounter({ value, suffix = "" }: { value: string; suffix?: string }) {
-  return (
-    <motion.span
-      initial={{ opacity: 0, scale: 0.5 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {value}{suffix}
-    </motion.span>
-  );
-}
-
 export function HeroSection() {
   const ref = useRef<HTMLDivElement>(null);
+  const { startCheckout, isLoading } = useCircleCheckout();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -143,7 +131,7 @@ export function HeroSection() {
           }}
         />
 
-        {/* Subtitle — character-level fade */}
+        {/* Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -190,14 +178,24 @@ export function HeroSection() {
             animate={{ opacity: [0.3, 0.6, 0.3] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
-          <a
-            href="#pricing"
-            className="relative inline-flex items-center gap-3 px-10 py-5 bg-ember hover:bg-ember-light text-midnight font-bold text-base sm:text-lg rounded-xl transition-all duration-300 hover:scale-[1.04] shadow-[0_0_30px_oklch(0.72_0.12_55/0.2)]"
+          <button
+            onClick={startCheckout}
+            disabled={isLoading}
+            className="relative inline-flex items-center gap-3 px-10 py-5 bg-ember hover:bg-ember-light text-midnight font-bold text-base sm:text-lg rounded-xl transition-all duration-300 hover:scale-[1.04] shadow-[0_0_30px_oklch(0.72_0.12_55/0.2)] disabled:opacity-70 disabled:cursor-wait cursor-pointer"
             style={{ fontFamily: "'Sora', sans-serif" }}
           >
-            Claim Your Founding Spot
-            <ArrowDown size={18} className="animate-bounce" />
-          </a>
+            {isLoading ? (
+              <>
+                <Loader2 size={18} className="animate-spin" />
+                Redirecting to Checkout...
+              </>
+            ) : (
+              <>
+                Claim Your Founding Spot
+                <ArrowDown size={18} className="animate-bounce" />
+              </>
+            )}
+          </button>
         </motion.div>
 
         {/* Scroll indicator */}

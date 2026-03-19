@@ -1,12 +1,14 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Zap, ArrowRight } from "lucide-react";
+import { Zap, ArrowRight, Loader2 } from "lucide-react";
+import { useCircleCheckout } from "@/hooks/useCircleCheckout";
 
 const easeOutCubic = [0.22, 1, 0.36, 1] as [number, number, number, number];
 
 export function FinalCTA() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { startCheckout, isLoading } = useCircleCheckout();
 
   return (
     <section ref={ref} className="relative z-10 py-20 sm:py-28 px-6 overflow-hidden">
@@ -75,15 +77,25 @@ export function FinalCTA() {
             animate={{ opacity: [0.3, 0.6, 0.3] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
-          <a
-            href="#pricing"
-            className="relative inline-flex items-center gap-3 px-10 py-5 bg-ember hover:bg-ember-light text-midnight font-bold text-base sm:text-lg rounded-xl transition-all duration-300 hover:scale-[1.04] shadow-[0_0_30px_oklch(0.72_0.12_55/0.15)]"
+          <button
+            onClick={startCheckout}
+            disabled={isLoading}
+            className="relative inline-flex items-center gap-3 px-10 py-5 bg-ember hover:bg-ember-light text-midnight font-bold text-base sm:text-lg rounded-xl transition-all duration-300 hover:scale-[1.04] shadow-[0_0_30px_oklch(0.72_0.12_55/0.15)] disabled:opacity-70 disabled:cursor-wait cursor-pointer"
             style={{ fontFamily: "'Sora', sans-serif" }}
           >
-            <Zap size={18} fill="currentColor" />
-            Claim Your Founding Spot — $497/mo
-            <ArrowRight size={18} />
-          </a>
+            {isLoading ? (
+              <>
+                <Loader2 size={18} className="animate-spin" />
+                Redirecting to Checkout...
+              </>
+            ) : (
+              <>
+                <Zap size={18} fill="currentColor" />
+                Claim Your Founding Spot — $497/mo
+                <ArrowRight size={18} />
+              </>
+            )}
+          </button>
         </motion.div>
 
         <motion.p

@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Check, Zap, Shield, ArrowRight } from "lucide-react";
+import { Check, Zap, Shield, ArrowRight, Loader2 } from "lucide-react";
+import { useCircleCheckout } from "@/hooks/useCircleCheckout";
 
 const included = [
   "Weekly group call with Marshall (Thursday evenings)",
@@ -17,6 +18,7 @@ const easeOutCubic = [0.22, 1, 0.36, 1] as [number, number, number, number];
 export function PricingSection() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const { startCheckout, isLoading } = useCircleCheckout();
 
   return (
     <section id="pricing" ref={ref} className="relative z-10 py-20 sm:py-28 px-6">
@@ -169,15 +171,25 @@ export function PricingSection() {
                 animate={{ opacity: [0.25, 0.5, 0.25] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               />
-              <a
-                href="#"
-                className="relative flex items-center justify-center gap-3 w-full py-5 bg-ember hover:bg-ember-light text-midnight font-bold text-base sm:text-lg rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-[0_0_30px_oklch(0.72_0.12_55/0.15)]"
+              <button
+                onClick={startCheckout}
+                disabled={isLoading}
+                className="relative flex items-center justify-center gap-3 w-full py-5 bg-ember hover:bg-ember-light text-midnight font-bold text-base sm:text-lg rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-[0_0_30px_oklch(0.72_0.12_55/0.15)] disabled:opacity-70 disabled:cursor-wait cursor-pointer"
                 style={{ fontFamily: "'Sora', sans-serif" }}
               >
-                <Zap size={18} fill="currentColor" />
-                Claim Your Founding Spot
-                <ArrowRight size={18} />
-              </a>
+                {isLoading ? (
+                  <>
+                    <Loader2 size={18} className="animate-spin" />
+                    Redirecting to Checkout...
+                  </>
+                ) : (
+                  <>
+                    <Zap size={18} fill="currentColor" />
+                    Claim Your Founding Spot
+                    <ArrowRight size={18} />
+                  </>
+                )}
+              </button>
             </motion.div>
 
             {/* Urgency Note */}

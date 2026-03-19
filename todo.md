@@ -28,3 +28,9 @@
 - [ ] Replay library page for recorded calls/bootcamps
 - [ ] Template downloads page
 - [ ] Account/subscription management
+- [x] Create Stripe product/price config for $497/mo Contracting Circle
+- [x] Build checkout session tRPC endpoint
+- [x] Set up Stripe webhook handler for subscription events
+- [x] Connect all CTA buttons on /circle to trigger Stripe checkout
+- [x] Test Stripe checkout flow end-to-end (vitest passed)
+- [ ] Deploy with Stripe integration live
