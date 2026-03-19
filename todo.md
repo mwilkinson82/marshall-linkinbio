@@ -125,3 +125,10 @@
 - [x] Upload PM Systems Spreadsheet to CDN
 - [x] Upload all templates to CDN
 - [x] Wire all templates into portal Templates page with real download links
+
+## Template Download Fix & Preview Modal
+- [x] Fix download button — CDN links not triggering download in browser (CORS / anchor issue)
+- [x] Build template preview modal — opens on card click, shows description, highlights, file graphic
+- [x] Add visual file-type graphic/icon to modal header
+- [x] Add Download button inside modal that correctly triggers file download
+- [x] Ensure clicking outside modal closes it
