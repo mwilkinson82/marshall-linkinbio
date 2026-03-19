@@ -64,6 +64,5 @@
 - [x] Wire Discord OAuth login into member portal with sidebar layout
 - [x] Write vitest tests for Discord OAuth and member features (39 total tests passing)
 - [ ] Test full Discord login flow end-to-end (requires manual browser test)
-- [ ] Fix Discord OAuth redirect URI mismatch
 - [x] Fix Discord OAuth redirect_uri to use hardcoded production domain
-- [ ] Publish site publicly
+- [x] Publish site publicly
