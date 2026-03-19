@@ -3,10 +3,14 @@ import Stripe from "stripe";
 import { stripe } from "./stripe";
 import { notifyOwner } from "./_core/notification";
 import { sendWelcomeEmail } from "./email";
+import { upsertMemberByEmail, getMemberByEmail } from "./memberDb";
 
 /**
  * Register the Stripe webhook endpoint.
  * MUST be called BEFORE express.json() middleware to preserve raw body for signature verification.
+ *
+ * IMPORTANT: This webhook only processes events that contain metadata.product_key === "contracting_circle".
+ * This prevents cross-site webhook noise from other Stripe products on the same account.
  */
 export function registerStripeWebhook(app: Express) {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -49,13 +53,46 @@ export function registerStripeWebhook(app: Express) {
         switch (event.type) {
           case "checkout.session.completed": {
             const session = event.data.object as Stripe.Checkout.Session;
+
+            // ─── FILTER: Only process Contracting Circle checkouts ───────────
+            // This prevents webhook noise from other products on the same Stripe account.
+            const productKey = session.metadata?.product_key;
+            if (productKey !== "contracting_circle") {
+              console.log(
+                `[Stripe Webhook] Ignoring checkout.session.completed — product_key: "${productKey}" is not "contracting_circle"`
+              );
+              break;
+            }
+
             console.log(
               `[Stripe Webhook] Checkout completed — session: ${session.id}, customer: ${session.customer}, email: ${session.customer_email}`
             );
-            // Send welcome email to new member
+
             const memberEmail = session.customer_email || session.customer_details?.email;
             const memberName = session.metadata?.customer_name || session.customer_details?.name || "New Member";
+            const stripeCustomerId = typeof session.customer === "string" ? session.customer : undefined;
+            const stripeSubscriptionId = typeof session.subscription === "string" ? session.subscription : undefined;
 
+            // ─── AUTO-CREATE / UPDATE MEMBER RECORD ──────────────────────────
+            // Create a member record in the database so the member can log in
+            // to the portal with Discord and have their subscription recognized.
+            if (memberEmail) {
+              try {
+                await upsertMemberByEmail({
+                  email: memberEmail,
+                  displayName: memberName,
+                  stripeCustomerId,
+                  stripeSubscriptionId,
+                  subscriptionStatus: "active",
+                  memberRole: "founding_member",
+                });
+                console.log(`[Stripe Webhook] Member record created/updated for ${memberEmail}`);
+              } catch (err) {
+                console.warn("[Stripe Webhook] Failed to upsert member record:", err);
+              }
+            }
+
+            // ─── SEND WELCOME EMAIL ───────────────────────────────────────────
             if (memberEmail) {
               try {
                 const emailResult = await sendWelcomeEmail({
@@ -74,7 +111,7 @@ export function registerStripeWebhook(app: Express) {
               console.warn("[Stripe Webhook] No email found on checkout session — skipping welcome email");
             }
 
-            // Notify Marshall of new member
+            // ─── NOTIFY MARSHALL ──────────────────────────────────────────────
             try {
               await notifyOwner({
                 title: "🎉 New Contracting Circle Member!",
@@ -88,6 +125,14 @@ export function registerStripeWebhook(app: Express) {
 
           case "customer.subscription.created": {
             const subscription = event.data.object as Stripe.Subscription;
+
+            // Filter: only process Contracting Circle subscriptions
+            const productKey = subscription.metadata?.product_key;
+            if (productKey !== "contracting_circle") {
+              console.log(`[Stripe Webhook] Ignoring subscription.created — product_key: "${productKey}"`);
+              break;
+            }
+
             console.log(
               `[Stripe Webhook] Subscription created — id: ${subscription.id}, customer: ${subscription.customer}, status: ${subscription.status}`
             );
@@ -96,18 +141,59 @@ export function registerStripeWebhook(app: Express) {
 
           case "customer.subscription.updated": {
             const subscription = event.data.object as Stripe.Subscription;
+
+            // Filter: only process Contracting Circle subscriptions
+            const productKey = subscription.metadata?.product_key;
+            if (productKey !== "contracting_circle") {
+              console.log(`[Stripe Webhook] Ignoring subscription.updated — product_key: "${productKey}"`);
+              break;
+            }
+
             console.log(
               `[Stripe Webhook] Subscription updated — id: ${subscription.id}, status: ${subscription.status}`
             );
+
+            // Update member subscription status in database
+            const customerId = typeof subscription.customer === "string" ? subscription.customer : null;
+            if (customerId) {
+              try {
+                await upsertMemberByStripeCustomerId(customerId, {
+                  stripeSubscriptionId: subscription.id,
+                  subscriptionStatus: mapStripeStatus(subscription.status),
+                });
+                console.log(`[Stripe Webhook] Updated subscription status for customer ${customerId}: ${subscription.status}`);
+              } catch (err) {
+                console.warn("[Stripe Webhook] Failed to update member subscription status:", err);
+              }
+            }
             break;
           }
 
           case "customer.subscription.deleted": {
             const subscription = event.data.object as Stripe.Subscription;
+
+            // Filter: only process Contracting Circle subscriptions
+            const productKey = subscription.metadata?.product_key;
+            if (productKey !== "contracting_circle") {
+              console.log(`[Stripe Webhook] Ignoring subscription.deleted — product_key: "${productKey}"`);
+              break;
+            }
+
             console.log(
               `[Stripe Webhook] Subscription cancelled — id: ${subscription.id}, customer: ${subscription.customer}`
             );
-            // Future: Revoke Discord access, send cancellation email
+
+            const customerId = typeof subscription.customer === "string" ? subscription.customer : null;
+            if (customerId) {
+              try {
+                await upsertMemberByStripeCustomerId(customerId, {
+                  subscriptionStatus: "canceled",
+                });
+                console.log(`[Stripe Webhook] Marked member as canceled for customer ${customerId}`);
+              } catch (err) {
+                console.warn("[Stripe Webhook] Failed to mark member as canceled:", err);
+              }
+            }
             break;
           }
 
@@ -140,4 +226,46 @@ export function registerStripeWebhook(app: Express) {
   );
 
   console.log("[Stripe Webhook] Registered at /api/stripe/webhook");
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function mapStripeStatus(
+  status: Stripe.Subscription.Status
+): "active" | "canceled" | "past_due" | "trialing" | "incomplete" | "none" {
+  const map: Record<string, "active" | "canceled" | "past_due" | "trialing" | "incomplete" | "none"> = {
+    active: "active",
+    canceled: "canceled",
+    past_due: "past_due",
+    trialing: "trialing",
+    incomplete: "incomplete",
+    incomplete_expired: "canceled",
+    unpaid: "past_due",
+    paused: "none",
+  };
+  return map[status] ?? "none";
+}
+
+async function upsertMemberByStripeCustomerId(
+  stripeCustomerId: string,
+  updates: {
+    stripeSubscriptionId?: string;
+    subscriptionStatus?: "active" | "canceled" | "past_due" | "trialing" | "incomplete" | "none";
+  }
+): Promise<void> {
+  const { upsertMemberByEmail } = await import("./memberDb");
+  const { getMemberByStripeCustomerId } = await import("./memberDb");
+
+  const existing = await getMemberByStripeCustomerId(stripeCustomerId);
+  if (!existing) {
+    console.warn(`[Stripe Webhook] No member found for Stripe customer ${stripeCustomerId}`);
+    return;
+  }
+
+  await upsertMemberByEmail({
+    email: existing.email || "",
+    displayName: existing.discordDisplayName || existing.discordUsername || "Member",
+    stripeCustomerId,
+    ...updates,
+  });
 }

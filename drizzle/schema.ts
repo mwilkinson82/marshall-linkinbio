@@ -1,4 +1,4 @@
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing Manus auth flow.
@@ -56,3 +56,46 @@ export const members = mysqlTable("members", {
 
 export type Member = typeof members.$inferSelect;
 export type InsertMember = typeof members.$inferInsert;
+
+/**
+ * Replays table — Contracting Circle call recordings hosted on Cloudflare Stream.
+ *
+ * Workflow:
+ * 1. Download Zoom recording after each Thursday call
+ * 2. Upload to Cloudflare Stream (get the video ID)
+ * 3. Add entry here via the admin panel or tRPC mutation
+ * 4. Members can watch in the portal Replay Library
+ */
+export const replays = mysqlTable("replays", {
+  id: int("id").autoincrement().primaryKey(),
+  /** Title shown in the library */
+  title: varchar("title", { length: 256 }).notNull(),
+  /** Short description */
+  description: text("description"),
+  /** Category for filtering */
+  category: mysqlEnum("category", [
+    "weekly_calls",
+    "bootcamp",
+    "masterclass",
+    "q_and_a",
+  ]).default("weekly_calls").notNull(),
+  /**
+   * Cloudflare Stream video ID.
+   * Embed URL: https://iframe.videodelivery.net/{cloudflareStreamId}
+   * Thumbnail URL: https://videodelivery.net/{cloudflareStreamId}/thumbnails/thumbnail.jpg
+   */
+  cloudflareStreamId: varchar("cloudflareStreamId", { length: 128 }).notNull(),
+  /** Duration string e.g. "1h 24m" */
+  duration: varchar("duration", { length: 32 }),
+  /** Date of the call/session */
+  callDate: timestamp("callDate").notNull(),
+  /** Whether to feature this replay at the top of the library */
+  featured: boolean("featured").default(false).notNull(),
+  /** Whether this replay is published (visible to members) */
+  published: boolean("published").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Replay = typeof replays.$inferSelect;
+export type InsertReplay = typeof replays.$inferInsert;

@@ -19,6 +19,23 @@ import {
 
 const DISCORD_INVITE = "https://discord.gg/TFSN7YPRWD";
 
+// Zoom recurring meeting link for Thursday calls at 12 PM EST
+// Update this URL when the Zoom meeting link changes
+const ZOOM_CALL_LINK = "https://us06web.zoom.us/j/YOUR_ZOOM_MEETING_ID";
+
+/** Returns the next Thursday at 12:00 PM EST as a formatted string */
+function getNextThursday(): string {
+  const now = new Date();
+  // Convert to EST (UTC-5 standard, UTC-4 daylight)
+  const estOffset = -4; // EDT (daylight saving)
+  const estNow = new Date(now.getTime() + (now.getTimezoneOffset() + estOffset * 60) * 60000);
+  const dayOfWeek = estNow.getDay(); // 0=Sun, 4=Thu
+  const daysUntilThursday = (4 - dayOfWeek + 7) % 7 || 7; // always next Thursday
+  const nextThursday = new Date(estNow);
+  nextThursday.setDate(estNow.getDate() + daysUntilThursday);
+  return nextThursday.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+}
+
 function StatusBadge({ status }: { status: string }) {
   const config: Record<string, { color: string; bg: string; label: string; icon: any }> = {
     active: { color: "text-green-400", bg: "bg-green-500/10", label: "Active", icon: CheckCircle2 },
@@ -81,8 +98,9 @@ export default function PortalDashboard() {
     {
       icon: Calendar,
       title: "Next Live Call",
-      description: "Every Thursday at 12 PM EST",
-      href: "#",
+      description: `${getNextThursday()} at 12 PM EST`,
+      href: ZOOM_CALL_LINK,
+      external: true,
       color: "text-ember",
       bg: "bg-ember/10",
     },

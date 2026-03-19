@@ -256,14 +256,55 @@ export function registerDiscordOAuthRoutes(app: Express) {
       // Fetch Discord user info
       const discordUser = await fetchDiscordUser(tokenData.access_token);
 
-      // Upsert member in database
-      await upsertMember({
-        discordId: discordUser.id,
-        discordUsername: discordUser.username,
-        discordDisplayName: discordUser.global_name || discordUser.username,
-        discordAvatar: discordUser.avatar,
-        email: discordUser.email,
-      });
+      // ─── Merge email-based member record (created by Stripe webhook) ────
+      // If a member record was created by Stripe (keyed by email, with a
+      // placeholder discordId like "email:..."), merge it with the real Discord
+      // identity so the member gets their subscription status on first login.
+      if (discordUser.email) {
+        const db = getDb();
+        if (db) {
+          const { eq } = await import("drizzle-orm");
+          const emailPlaceholder = `email:${discordUser.email}`;
+          const pendingRecord = await db
+            .select()
+            .from(members)
+            .where(eq(members.discordId, emailPlaceholder))
+            .limit(1);
+
+          if (pendingRecord.length > 0) {
+            // Update the placeholder record with the real Discord identity
+            await db
+              .update(members)
+              .set({
+                discordId: discordUser.id,
+                discordUsername: discordUser.username,
+                discordDisplayName: discordUser.global_name || discordUser.username,
+                discordAvatar: discordUser.avatar,
+                lastSignedIn: new Date(),
+              })
+              .where(eq(members.discordId, emailPlaceholder));
+            console.log(`[Discord OAuth] Merged Stripe member record for ${discordUser.email} with Discord ID ${discordUser.id}`);
+          } else {
+            // No pending record — standard upsert
+            await upsertMember({
+              discordId: discordUser.id,
+              discordUsername: discordUser.username,
+              discordDisplayName: discordUser.global_name || discordUser.username,
+              discordAvatar: discordUser.avatar,
+              email: discordUser.email,
+            });
+          }
+        }
+      } else {
+        // No email from Discord — standard upsert
+        await upsertMember({
+          discordId: discordUser.id,
+          discordUsername: discordUser.username,
+          discordDisplayName: discordUser.global_name || discordUser.username,
+          discordAvatar: discordUser.avatar,
+          email: discordUser.email,
+        });
+      }
 
       // Fetch the member record to get the ID
       const member = await getMemberByDiscordId(discordUser.id);

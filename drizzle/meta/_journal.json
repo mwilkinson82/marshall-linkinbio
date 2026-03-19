@@ -15,6 +15,13 @@
       "when": 1773931706729,
       "tag": "0001_flippant_lady_bullseye",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1773935264002,
+      "tag": "0002_lovely_speedball",
+      "breakpoints": true
     }
   ]
 }

@@ -67,3 +67,38 @@
 - [x] Fix Discord OAuth redirect_uri to use hardcoded production domain
 - [x] Publish site publicly
 - [x] Update Discord invite link to https://discord.gg/TFSN7YPRWD across all pages
+
+## Operational Roadmap (from Marshall's voice notes)
+
+### Priority 1 — Auto Member Creation on Stripe Payment
+- [x] Auto-create member portal account when Stripe checkout.session.completed fires
+- [x] Link Stripe customer email to Discord member record on signup
+- [x] Filter Stripe webhook to only process events from THIS app (avoid cross-site webhook noise)
+
+### Priority 2 — Cloudflare Stream Video Integration
+- [x] Add Cloudflare Stream video player component to Replay Library
+- [x] Create admin tRPC endpoints (addReplay, deleteReplay) for Cloudflare Stream video IDs
+- [x] Store replay metadata in database (title, date, duration, category, cloudflare_stream_id)
+- [x] Replace placeholder replay cards with real database-driven content
+- [x] Document workflow: Download Zoom recording → Upload to Cloudflare Stream → Add ID to portal
+
+### Priority 3 — Zoom Call Calendar Integration
+- [x] Add recurring Thursday call Zoom link to portal dashboard (ZOOM_CALL_LINK placeholder)
+- [ ] Add "Add to Calendar" button (.ics download) for weekly calls
+- [x] Show next upcoming call date/time dynamically in the portal
+
+### Priority 4 — Real Templates
+- [ ] Repurpose existing ALP templates (from outdoor living sales course) for the template library
+- [ ] Create additional contractor-specific templates
+- [ ] Add real download links to template library page
+
+### Priority 5 — Future: Multi-Membership Expansion
+- [ ] Evaluate duplicating this portal for: Contractor School, Sales & Marketing School, Power Hour, ALP University
+- [ ] Consider making existing Kajabi members "honorary" Contracting Circle members
+- [ ] Design membership tier system if multiple portals are consolidated into one
+
+### Notes
+- Cloudflare Stream is already in use for ALP Living Sales course — use same workflow here
+- All memberships currently in Kajabi; plan to migrate forward (not backward) to this platform
+- Stripe account is shared across multiple sites — webhook filtering is critical
+- Zoom recordings need to be manually downloaded and uploaded to Cloudflare Stream (no automation yet)

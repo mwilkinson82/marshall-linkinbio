@@ -1,6 +1,7 @@
 /**
  * Replay Library — Watch past Contracting Circle calls and bootcamp sessions.
- * Placeholder content that Marshall can populate with real recordings.
+ * Videos are hosted on Cloudflare Stream and stored in the database.
+ * Marshall adds new replays after each Thursday call via the admin panel.
  */
 import { useState, useMemo } from "react";
 import {
@@ -9,94 +10,14 @@ import {
   Calendar,
   Search,
   Filter,
-  Lock,
   Star,
   ChevronRight,
+  X,
+  Video,
 } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 
 type ReplayCategory = "all" | "weekly_calls" | "bootcamp" | "masterclass" | "q_and_a";
-
-interface Replay {
-  id: string;
-  title: string;
-  description: string;
-  category: Exclude<ReplayCategory, "all">;
-  duration: string;
-  date: string;
-  thumbnail?: string;
-  featured?: boolean;
-  locked?: boolean;
-}
-
-// Placeholder replays — Marshall will replace with real content
-const REPLAYS: Replay[] = [
-  {
-    id: "1",
-    title: "Scaling Your Contracting Business to $10M+",
-    description: "Marshall breaks down the exact systems and processes needed to scale past the $10M revenue mark in construction.",
-    category: "masterclass",
-    duration: "1h 24m",
-    date: "2026-03-13",
-    featured: true,
-  },
-  {
-    id: "2",
-    title: "Weekly Call — Closing High-Ticket Contracts",
-    description: "Live coaching session on proposal strategies and closing techniques for $500K+ contracts.",
-    category: "weekly_calls",
-    duration: "58m",
-    date: "2026-03-06",
-  },
-  {
-    id: "3",
-    title: "Sales Bootcamp Session 1: The ALP Framework",
-    description: "Introduction to the Altitude Logic Pressure sales methodology and how to apply it in construction.",
-    category: "bootcamp",
-    duration: "1h 45m",
-    date: "2026-02-27",
-    featured: true,
-  },
-  {
-    id: "4",
-    title: "Weekly Call — Handling Objections in Construction Sales",
-    description: "Real-world objection handling scenarios and role-play exercises with Circle members.",
-    category: "weekly_calls",
-    duration: "52m",
-    date: "2026-02-20",
-  },
-  {
-    id: "5",
-    title: "Q&A: Bidding Strategy for Government Contracts",
-    description: "Open Q&A session focused on winning government and municipal construction bids.",
-    category: "q_and_a",
-    duration: "45m",
-    date: "2026-02-13",
-  },
-  {
-    id: "6",
-    title: "Sales Bootcamp Session 2: Building Your Pipeline",
-    description: "Creating a predictable pipeline of qualified leads and managing your sales funnel effectively.",
-    category: "bootcamp",
-    duration: "1h 32m",
-    date: "2026-02-06",
-  },
-  {
-    id: "7",
-    title: "Masterclass: Negotiation Tactics That Win",
-    description: "Advanced negotiation strategies specifically designed for construction contracts and change orders.",
-    category: "masterclass",
-    duration: "1h 15m",
-    date: "2026-01-30",
-  },
-  {
-    id: "8",
-    title: "Weekly Call — Building Your Team",
-    description: "Hiring, training, and retaining top talent in your contracting business.",
-    category: "weekly_calls",
-    duration: "1h 02m",
-    date: "2026-01-23",
-  },
-];
 
 const CATEGORIES: { value: ReplayCategory; label: string }[] = [
   { value: "all", label: "All Replays" },
@@ -126,20 +47,104 @@ function categoryLabel(cat: string): string {
   return labels[cat] || cat;
 }
 
+interface VideoModalProps {
+  embedUrl: string;
+  title: string;
+  onClose: () => void;
+}
+
+function VideoModal({ embedUrl, title, onClose }: VideoModalProps) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+      onClick={onClose}
+    >
+      <div
+        className="w-full max-w-4xl bg-navy-deep rounded-2xl overflow-hidden shadow-2xl border border-white/10"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Modal header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+          <h3 className="font-heading text-sm font-semibold text-cream truncate pr-4">{title}</h3>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors shrink-0"
+          >
+            <X className="w-4 h-4 text-cream-muted" />
+          </button>
+        </div>
+        {/* Cloudflare Stream iframe */}
+        <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+          <iframe
+            src={`${embedUrl}?autoplay=true&muted=false`}
+            className="absolute inset-0 w-full h-full"
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+            allowFullScreen
+            title={title}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PortalReplays() {
   const [activeCategory, setActiveCategory] = useState<ReplayCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeVideo, setActiveVideo] = useState<{ embedUrl: string; title: string } | null>(null);
+
+  const { data, isLoading, error } = trpc.member.replays.useQuery();
+  const allReplays = data?.replays ?? [];
 
   const filteredReplays = useMemo(() => {
-    return REPLAYS.filter(r => {
+    return allReplays.filter(r => {
       if (activeCategory !== "all" && r.category !== activeCategory) return false;
-      if (searchQuery && !r.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-          !r.description.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+      if (
+        searchQuery &&
+        !r.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        !(r.description || "").toLowerCase().includes(searchQuery.toLowerCase())
+      )
+        return false;
       return true;
     });
-  }, [activeCategory, searchQuery]);
+  }, [allReplays, activeCategory, searchQuery]);
 
-  const featuredReplays = REPLAYS.filter(r => r.featured);
+  const featuredReplays = allReplays.filter(r => r.featured);
+
+  if (isLoading) {
+    return (
+      <div className="max-w-5xl mx-auto space-y-8">
+        <div>
+          <div className="h-8 w-48 bg-white/5 rounded-lg animate-pulse mb-2" />
+          <div className="h-4 w-72 bg-white/5 rounded animate-pulse" />
+        </div>
+        <div className="space-y-3">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="glass-card rounded-xl p-5 animate-pulse">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-lg bg-white/5" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 bg-white/5 rounded w-3/4" />
+                  <div className="h-3 bg-white/5 rounded w-1/2" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-5xl mx-auto">
+        <div className="glass-card rounded-xl p-12 text-center">
+          <Video className="w-10 h-10 text-cream-muted mx-auto mb-4" />
+          <p className="text-cream-muted text-sm">Unable to load replays. Please try again.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
@@ -153,6 +158,21 @@ export default function PortalReplays() {
         </p>
       </div>
 
+      {/* Empty state — no replays yet */}
+      {allReplays.length === 0 && (
+        <div className="glass-card rounded-xl p-16 text-center border border-ember/10">
+          <div className="w-16 h-16 rounded-2xl bg-ember/10 flex items-center justify-center mx-auto mb-4">
+            <Video className="w-8 h-8 text-ember" />
+          </div>
+          <h3 className="font-heading text-lg font-semibold text-cream mb-2">
+            Replays Coming Soon
+          </h3>
+          <p className="text-cream-muted text-sm max-w-sm mx-auto">
+            Recordings from each Thursday call will appear here after the session. Check back after your first call!
+          </p>
+        </div>
+      )}
+
       {/* Featured Section */}
       {featuredReplays.length > 0 && (
         <div className="space-y-4">
@@ -165,14 +185,25 @@ export default function PortalReplays() {
               <button
                 key={replay.id}
                 className="group glass-card rounded-xl p-5 text-left hover:bg-white/[0.03] transition-all duration-300 border border-ember/10"
-                onClick={() => {
-                  // TODO: Open video player
-                }}
+                onClick={() => setActiveVideo({ embedUrl: replay.embedUrl, title: replay.title })}
               >
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-ember/10 flex items-center justify-center shrink-0 group-hover:bg-ember/20 transition-colors">
-                    <PlayCircle className="w-7 h-7 text-ember" />
+                {/* Cloudflare Stream thumbnail */}
+                <div className="w-full aspect-video rounded-lg overflow-hidden mb-4 bg-white/5 relative">
+                  <img
+                    src={replay.thumbnailUrl}
+                    alt={replay.title}
+                    className="w-full h-full object-cover"
+                    onError={e => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-ember/80 flex items-center justify-center group-hover:bg-ember transition-colors">
+                      <PlayCircle className="w-6 h-6 text-white" />
+                    </div>
                   </div>
+                </div>
+                <div className="flex items-start gap-3">
                   <div className="flex-1 min-w-0">
                     <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider mb-2 ${categoryColor(replay.category)}`}>
                       {categoryLabel(replay.category)}
@@ -181,11 +212,14 @@ export default function PortalReplays() {
                       {replay.title}
                     </h3>
                     <div className="flex items-center gap-3 mt-2 text-cream-muted text-xs">
+                      {replay.duration && (
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" /> {replay.duration}
+                        </span>
+                      )}
                       <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" /> {replay.duration}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" /> {new Date(replay.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                        <Calendar className="w-3 h-3" />
+                        {new Date(replay.callDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                       </span>
                     </div>
                   </div>
@@ -196,91 +230,115 @@ export default function PortalReplays() {
         </div>
       )}
 
-      {/* Search and Filter */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-muted" />
-          <input
-            type="text"
-            placeholder="Search replays..."
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-cream placeholder:text-cream-muted/50 focus:outline-none focus:border-ember/30 focus:ring-1 focus:ring-ember/20 transition-all"
-          />
+      {/* Search and Filter — only show if there are replays */}
+      {allReplays.length > 0 && (
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-muted" />
+            <input
+              type="text"
+              placeholder="Search replays..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-cream placeholder:text-cream-muted/50 focus:outline-none focus:border-ember/30 focus:ring-1 focus:ring-ember/20 transition-all"
+            />
+          </div>
+          <div className="flex gap-2 overflow-x-auto no-scrollbar">
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat.value}
+                onClick={() => setActiveCategory(cat.value)}
+                className={`px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+                  activeCategory === cat.value
+                    ? "bg-ember/15 text-ember border border-ember/20"
+                    : "bg-white/5 text-cream-muted hover:text-cream border border-transparent"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="flex gap-2 overflow-x-auto no-scrollbar">
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat.value}
-              onClick={() => setActiveCategory(cat.value)}
-              className={`px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
-                activeCategory === cat.value
-                  ? "bg-ember/15 text-ember border border-ember/20"
-                  : "bg-white/5 text-cream-muted hover:text-cream border border-transparent"
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      )}
 
       {/* Replay List */}
-      <div className="space-y-3">
-        {filteredReplays.length === 0 ? (
-          <div className="glass-card rounded-xl p-12 text-center">
-            <Filter className="w-8 h-8 text-cream-muted mx-auto mb-3" />
-            <p className="text-cream-muted text-sm">No replays match your search.</p>
-          </div>
-        ) : (
-          filteredReplays.map(replay => (
-            <button
-              key={replay.id}
-              className="group w-full glass-card rounded-xl p-4 md:p-5 text-left hover:bg-white/[0.03] transition-all duration-300 flex items-center gap-4"
-              onClick={() => {
-                // TODO: Open video player
-              }}
-            >
-              <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-ember/10 transition-colors">
-                {replay.locked ? (
-                  <Lock className="w-5 h-5 text-cream-muted" />
-                ) : (
-                  <PlayCircle className="w-5 h-5 md:w-6 md:h-6 text-cream-muted group-hover:text-ember transition-colors" />
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider ${categoryColor(replay.category)}`}>
-                    {categoryLabel(replay.category)}
-                  </span>
+      {allReplays.length > 0 && (
+        <div className="space-y-3">
+          {filteredReplays.length === 0 ? (
+            <div className="glass-card rounded-xl p-12 text-center">
+              <Filter className="w-8 h-8 text-cream-muted mx-auto mb-3" />
+              <p className="text-cream-muted text-sm">No replays match your search.</p>
+            </div>
+          ) : (
+            filteredReplays.map(replay => (
+              <button
+                key={replay.id}
+                className="group w-full glass-card rounded-xl p-4 md:p-5 text-left hover:bg-white/[0.03] transition-all duration-300 flex items-center gap-4"
+                onClick={() => setActiveVideo({ embedUrl: replay.embedUrl, title: replay.title })}
+              >
+                {/* Thumbnail */}
+                <div className="w-16 h-12 md:w-20 md:h-14 rounded-lg overflow-hidden bg-white/5 relative shrink-0">
+                  <img
+                    src={replay.thumbnailUrl}
+                    alt={replay.title}
+                    className="w-full h-full object-cover"
+                    onError={e => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-colors">
+                    <PlayCircle className="w-5 h-5 text-white/80 group-hover:text-ember transition-colors" />
+                  </div>
                 </div>
-                <h3 className="font-heading text-sm font-semibold text-cream group-hover:text-ember transition-colors truncate">
-                  {replay.title}
-                </h3>
-                <p className="text-cream-muted text-xs mt-1 line-clamp-1 hidden sm:block">
-                  {replay.description}
-                </p>
-              </div>
-              <div className="flex items-center gap-4 shrink-0">
-                <div className="hidden md:flex flex-col items-end gap-1 text-cream-muted text-xs">
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" /> {replay.duration}
-                  </span>
-                  <span>{new Date(replay.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider ${categoryColor(replay.category)}`}>
+                      {categoryLabel(replay.category)}
+                    </span>
+                  </div>
+                  <h3 className="font-heading text-sm font-semibold text-cream group-hover:text-ember transition-colors truncate">
+                    {replay.title}
+                  </h3>
+                  <p className="text-cream-muted text-xs mt-1 line-clamp-1 hidden sm:block">
+                    {replay.description}
+                  </p>
                 </div>
-                <ChevronRight className="w-4 h-4 text-cream-muted group-hover:text-ember transition-colors" />
-              </div>
-            </button>
-          ))
-        )}
-      </div>
+                <div className="flex items-center gap-4 shrink-0">
+                  <div className="hidden md:flex flex-col items-end gap-1 text-cream-muted text-xs">
+                    {replay.duration && (
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" /> {replay.duration}
+                      </span>
+                    )}
+                    <span>
+                      {new Date(replay.callDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                    </span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-cream-muted group-hover:text-ember transition-colors" />
+                </div>
+              </button>
+            ))
+          )}
+        </div>
+      )}
 
       {/* Info Note */}
-      <div className="glass-card rounded-xl p-5 text-center">
-        <p className="text-cream-muted text-sm">
-          New recordings are added after each Thursday call. Check back regularly for fresh content.
-        </p>
-      </div>
+      {allReplays.length > 0 && (
+        <div className="glass-card rounded-xl p-5 text-center">
+          <p className="text-cream-muted text-sm">
+            New recordings are added after each Thursday call. Check back regularly for fresh content.
+          </p>
+        </div>
+      )}
+
+      {/* Video Modal */}
+      {activeVideo && (
+        <VideoModal
+          embedUrl={activeVideo.embedUrl}
+          title={activeVideo.title}
+          onClose={() => setActiveVideo(null)}
+        />
+      )}
     </div>
   );
 }

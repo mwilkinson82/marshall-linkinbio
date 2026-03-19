@@ -3,10 +3,22 @@
  * Uses Discord session (member_session cookie) instead of Manus auth.
  */
 import { TRPCError } from "@trpc/server";
-import { publicProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { parseMemberCookie, verifyMemberSession, getMemberById } from "./discord";
 import { stripe } from "./stripe";
+import { drizzle } from "drizzle-orm/mysql2";
+import { desc, eq } from "drizzle-orm";
+import { replays, members } from "../drizzle/schema";
 import type { Member } from "../drizzle/schema";
+import { z } from "zod";
+
+let _db: ReturnType<typeof drizzle> | null = null;
+function getDb() {
+  if (!_db && process.env.DATABASE_URL) {
+    _db = drizzle(process.env.DATABASE_URL);
+  }
+  return _db;
+}
 
 /**
  * Middleware that extracts the member from the Discord session cookie.
@@ -92,6 +104,105 @@ export const memberRouter = router({
       };
     }
   }),
+
+  /**
+   * Get all published replays from the database (Cloudflare Stream videos).
+   * Returns replays ordered by call date descending.
+   */
+  replays: publicProcedure.query(async ({ ctx }) => {
+    const member = await getMemberFromRequest(ctx.req);
+    if (!member) {
+      throw new TRPCError({ code: "UNAUTHORIZED", message: "Not logged in" });
+    }
+
+    const db = getDb();
+    if (!db) return { replays: [] };
+
+    const rows = await db
+      .select()
+      .from(replays)
+      .where(eq(replays.published, true))
+      .orderBy(desc(replays.callDate));
+
+    return {
+      replays: rows.map(r => ({
+        id: r.id,
+        title: r.title,
+        description: r.description,
+        category: r.category,
+        cloudflareStreamId: r.cloudflareStreamId,
+        duration: r.duration,
+        callDate: r.callDate,
+        featured: r.featured,
+        // Cloudflare Stream embed and thumbnail URLs
+        embedUrl: `https://iframe.videodelivery.net/${r.cloudflareStreamId}`,
+        thumbnailUrl: `https://videodelivery.net/${r.cloudflareStreamId}/thumbnails/thumbnail.jpg`,
+      })),
+    };
+  }),
+
+  /**
+   * Admin: Add a new replay (Cloudflare Stream video).
+   * Only accessible to members with memberRole === 'admin'.
+   */
+  addReplay: publicProcedure
+    .input(
+      z.object({
+        title: z.string().min(1),
+        description: z.string().optional(),
+        category: z.enum(["weekly_calls", "bootcamp", "masterclass", "q_and_a"]),
+        cloudflareStreamId: z.string().min(1),
+        duration: z.string().optional(),
+        callDate: z.date(),
+        featured: z.boolean().default(false),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const member = await getMemberFromRequest(ctx.req);
+      if (!member) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Not logged in" });
+      }
+      if (member.memberRole !== "admin") {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+      }
+
+      const db = getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database not configured" });
+
+      await db.insert(replays).values({
+        title: input.title,
+        description: input.description,
+        category: input.category,
+        cloudflareStreamId: input.cloudflareStreamId,
+        duration: input.duration,
+        callDate: input.callDate,
+        featured: input.featured,
+        published: true,
+      });
+
+      return { success: true };
+    }),
+
+  /**
+   * Admin: Delete a replay.
+   */
+  deleteReplay: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const member = await getMemberFromRequest(ctx.req);
+      if (!member) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Not logged in" });
+      }
+      if (member.memberRole !== "admin") {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+      }
+
+      const db = getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database not configured" });
+
+      await db.delete(replays).where(eq(replays.id, input.id));
+      return { success: true };
+    }),
 
   /**
    * Get payment history from Stripe for the current member.
