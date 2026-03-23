@@ -175,7 +175,7 @@ const TEMPLATES: Template[] = [
     longDescription: "Most GCs treat the schedule as a formality. This guide shows you how Critical Path Method (CPM) scheduling is one of the most powerful financial tools in construction — used to protect cash flow, document delays, win change order disputes, and hold subs accountable. Covers the fundamentals of CPM, how to build a schedule that works for you legally and financially, and the exact moves that separate contractors who get paid from those who get buried.",
     category: "operations",
     fileType: "pdf",
-    downloadUrl: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663332724241/QTEKbtMUWsoeaMUc.pdf",
+    downloadUrl: "https://drive.google.com/file/d/1tcDTbADD3V7oIV72OJSvHBqKsFz9-DB8/view?usp=sharing",
     featured: true,
     badge: "Financial Edge",
     pages: "Full guide",
