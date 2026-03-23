@@ -11,6 +11,7 @@ import { desc, eq } from "drizzle-orm";
 import { replays, members } from "../drizzle/schema";
 import type { Member } from "../drizzle/schema";
 import { z } from "zod";
+import { upsertMemberByEmail, getMemberByEmail } from "./memberDb";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 function getDb() {
@@ -203,6 +204,87 @@ export const memberRouter = router({
       await db.delete(replays).where(eq(replays.id, input.id));
       return { success: true };
     }),
+
+  /**
+   * Admin: Add a new member to the Contractor Circle.
+   * Only accessible to members with memberRole === 'admin'.
+   * Uses upsertMemberByEmail from memberDb.ts — the same function used by the Stripe webhook.
+   */
+  addMember: publicProcedure
+    .input(
+      z.object({
+        email: z.string().email(),
+        displayName: z.string().optional(),
+        subscriptionStatus: z.enum(["active", "canceled", "past_due", "trialing", "incomplete", "none"]).default("active"),
+        memberRole: z.enum(["member", "founding_member", "admin"]).default("founding_member"),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const member = await getMemberFromRequest(ctx.req);
+      if (!member) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Not logged in" });
+      }
+      if (member.memberRole !== "admin") {
+        throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+      }
+
+      await upsertMemberByEmail({
+        email: input.email,
+        displayName: input.displayName,
+        subscriptionStatus: input.subscriptionStatus,
+        memberRole: input.memberRole,
+      });
+
+      // Fetch the created/updated member to return confirmation
+      const created = await getMemberByEmail(input.email);
+
+      return {
+        success: true,
+        member: created
+          ? {
+              id: created.id,
+              email: created.email,
+              displayName: created.discordDisplayName,
+              subscriptionStatus: created.subscriptionStatus,
+              memberRole: created.memberRole,
+            }
+          : null,
+      };
+    }),
+
+  /**
+   * Admin: List all members.
+   * Only accessible to members with memberRole === 'admin'.
+   */
+  listMembers: publicProcedure.query(async ({ ctx }) => {
+    const member = await getMemberFromRequest(ctx.req);
+    if (!member) {
+      throw new TRPCError({ code: "UNAUTHORIZED", message: "Not logged in" });
+    }
+    if (member.memberRole !== "admin") {
+      throw new TRPCError({ code: "FORBIDDEN", message: "Admin access required" });
+    }
+
+    const db = getDb();
+    if (!db) return { members: [] };
+
+    const rows = await db
+      .select()
+      .from(members)
+      .orderBy(desc(members.createdAt));
+
+    return {
+      members: rows.map(m => ({
+        id: m.id,
+        discordId: m.discordId,
+        discordDisplayName: m.discordDisplayName,
+        email: m.email,
+        subscriptionStatus: m.subscriptionStatus,
+        memberRole: m.memberRole,
+        createdAt: m.createdAt,
+      })),
+    };
+  }),
 
   /**
    * Get payment history from Stripe for the current member.
