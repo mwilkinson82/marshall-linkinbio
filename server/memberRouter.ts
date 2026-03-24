@@ -7,7 +7,7 @@ import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { parseMemberCookie, verifyMemberSession, getMemberById } from "./discord";
 import { stripe } from "./stripe";
 import { drizzle } from "drizzle-orm/mysql2";
-import { desc, eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import { replays, members } from "../drizzle/schema";
 import type { Member } from "../drizzle/schema";
 import { z } from "zod";
@@ -34,6 +34,26 @@ async function getMemberFromRequest(req: any): Promise<Member | null> {
 }
 
 export const memberRouter = router({
+  /**
+   * Public: Get the count of active founding members.
+   * Used by the sales page hero badge to show "X OF 50 SPOTS FILLED".
+   * No authentication required — this is public-facing data.
+   */
+  foundingMemberCount: publicProcedure.query(async () => {
+    const db = getDb();
+    if (!db) return { count: 7 }; // Fallback if DB unavailable
+    try {
+      const result = await db
+        .select({ value: count() })
+        .from(members)
+        .where(eq(members.subscriptionStatus, "active"));
+      return { count: result[0]?.value ?? 7 };
+    } catch (err) {
+      console.warn("[memberRouter] Failed to count founding members:", err);
+      return { count: 7 }; // Fallback
+    }
+  }),
+
   /**
    * Get current member info from Discord session.
    */

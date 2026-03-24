@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ArrowDown, Zap, Loader2 } from "lucide-react";
 import { useCircleCheckout } from "@/hooks/useCircleCheckout";
+import { trpc } from "@/lib/trpc";
 
 const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/marshall_hero_6c478c8c.webp";
 
@@ -40,6 +41,13 @@ export function HeroSection() {
   const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
   const imageY = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [0.75, 0.95]);
+
+  // Dynamic founding member count from the database
+  const { data: memberCountData } = trpc.member.foundingMemberCount.useQuery(undefined, {
+    staleTime: 60_000, // Cache for 1 minute
+    refetchOnWindowFocus: false,
+  });
+  const foundingCount = memberCountData?.count ?? 7;
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -88,7 +96,7 @@ export function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-3xl mx-auto pt-24 pb-12">
-        {/* Founding Members Badge — animated pulse */}
+        {/* Founding Members Badge — animated pulse with DYNAMIC count */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -103,7 +111,7 @@ export function HeroSection() {
           />
           <Zap size={14} className="text-ember" fill="currentColor" />
           <span className="text-xs font-semibold tracking-[0.15em] uppercase text-ember" style={{ fontFamily: "'Sora', sans-serif" }}>
-            Founding Members — Limited Spots
+            Founding Members — {foundingCount} of 50 Spots Filled
           </span>
         </motion.div>
 
@@ -150,7 +158,7 @@ export function HeroSection() {
           transition={{ duration: 0.9, delay: 1.3, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-wrap justify-center gap-3 mb-10"
         >
-          {["Weekly Calls", "Deal Reviews", "Templates", "Private Community"].map((item, i) => (
+          {["Bi-Weekly Calls", "Deal Reviews", "Templates", "Private Community"].map((item, i) => (
             <motion.span
               key={item}
               initial={{ opacity: 0, y: 15 }}
