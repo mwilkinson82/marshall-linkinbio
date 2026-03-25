@@ -47,7 +47,7 @@ export function HeroSection() {
     staleTime: 60_000, // Cache for 1 minute
     refetchOnWindowFocus: false,
   });
-  const foundingCount = memberCountData?.count ?? 7;
+  const foundingCount = memberCountData?.count ?? 8;
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">

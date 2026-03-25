@@ -41,16 +41,16 @@ export const memberRouter = router({
    */
   foundingMemberCount: publicProcedure.query(async () => {
     const db = getDb();
-    if (!db) return { count: 7 }; // Fallback if DB unavailable
+    if (!db) return { count: 8 }; // Fallback if DB unavailable
     try {
       const result = await db
         .select({ value: count() })
         .from(members)
         .where(eq(members.subscriptionStatus, "active"));
-      return { count: result[0]?.value ?? 7 };
+      return { count: result[0]?.value ?? 8 };
     } catch (err) {
       console.warn("[memberRouter] Failed to count founding members:", err);
-      return { count: 7 }; // Fallback
+      return { count: 8 }; // Fallback
     }
   }),
 
