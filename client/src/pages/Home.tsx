@@ -71,6 +71,15 @@ const products = [
 
 const freeResources = [
   {
+    title: "Q2 Framework Guide",
+    price: "FREE",
+    description: "A six-page framework to help you turn your first quarter lessons into second quarter momentum",
+    link: "https://alpcontractorcircle.com/q2",
+    icon: "download" as const,
+    badge: "Free",
+    isFree: true,
+  },
+  {
     title: "15 Strategic Sales Questions",
     price: "FREE",
     description: "The discovery framework for closing high-ticket outdoor living projects",

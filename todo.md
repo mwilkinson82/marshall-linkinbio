@@ -132,3 +132,56 @@
 - [x] Add visual file-type graphic/icon to modal header
 - [x] Add Download button inside modal that correctly triggers file download
 - [x] Ensure clicking outside modal closes it
+
+## Google Drive Template Library
+- [x] Discover gws CLI capabilities and folder IDs
+- [x] Create Contractor Proposal Template (Google Doc) in Sales folder
+- [x] Create Construction Agreement (Google Doc) in Contracts folder
+- [x] Create Follow-Up Email Scripts (Google Doc) in Sales folder
+- [x] Create Objection Reframing Guide (Google Doc) in Sales folder
+- [x] Create Bid Sheet & Estimating Template (Google Sheet) in Estimating folder
+- [x] Create PM Systems Presentation Notes (Google Doc) in Operations folder Create PM Systems Spreadsheets (Google Sheet) in Operations folder
+- [x] Share all 7 files as "Anyone with the link can view"
+- [x] Collect /copy URLs for all templates
+
+## Construction Agreement Rebuild (AIA A101/A201 Framework)
+- [ ] Research AIA A101 (Owner-Contractor Agreement) structure and articles
+- [ ] Research AIA A201 (General Conditions) structure and provisions
+- [ ] Write complete rebuilt agreement with all required provisions
+- [ ] Include: Agreement/Recitals (Art 1), Mutual Rights (Art 2), pass-through terms, notice requirements, delay/time-bar, insurance, termination for cause/convenience, default, severability, assignment, Exhibit A scope
+- [ ] Clear existing Google Doc and populate with new professional content
+- [ ] Verify document quality and completeness
+
+## Bid Sheet Rebuild — Full CSI MasterFormat
+- [ ] Clear existing sheet tabs and create all CSI division tabs (01-33)
+- [ ] Create Summary tab, Sub Bid Comparison, Change Order Log, Payment Tracker, Instructions tabs
+- [ ] Populate Div 01-09 with detailed line items and formulas
+- [ ] Populate Div 10-14, 21-28, 31-33 with detailed line items and formulas
+- [ ] Build Summary tab with cross-sheet formulas pulling from all divisions
+- [ ] Add 3-tier pricing section (Essential/Signature/Estate)
+- [ ] Verify all formulas and tab references work correctly
+
+## Roles & Responsibilities Framework (New Template)
+- [ ] Reference Marshall's PM deck content for PM section
+- [ ] Create new Google Doc in Operations folder (16yGtL1R5suX3njomPp3cZGRS-DDQtIdv)
+- [ ] Write comprehensive framework for all 9 positions
+- [ ] Include for each: Core Responsibilities, Authority Level, Reporting Structure, Boundaries, KPIs, Common Mistakes
+- [ ] Share as "Anyone with the link can view"
+- [ ] Collect /copy URL
+
+## Proposal Template Premium Formatting Rebuild
+- [x] Clear and rewrite proposal with cover page, executive summary, premium content
+- [x] Apply premium formatting: navy/gold palette, styled headers, alternating table rows
+- [x] Color-coded 3-tier pricing tables (Essential/Signature/Estate)
+- [x] Styled callout boxes for coaching tips
+- [x] Professional spacing, typography, section dividers
+
+## Roles & Responsibilities Framework — COMPLETE
+- [x] Create Roles & Responsibilities Framework Google Doc in Operations folder (ID: 1H5_dKbrSgwTpKD7lxK4i3dsjMJvnhCs2sg3l3f4AZHk)
+- [x] Share as "Anyone with the link can view"
+- [x] /copy URL: https://docs.google.com/document/d/1H5_dKbrSgwTpKD7lxK4i3dsjMJvnhCs2sg3l3f4AZHk/copy
+
+## Q2 Framework Guide Free Resource
+- [x] Add Q2 Framework Guide card above 15 Strategic Sales Questions in Free Resources section
+- [x] Include green FREE badge matching existing style
+- [x] Link to https://alpcontractorcircle.com/q2
