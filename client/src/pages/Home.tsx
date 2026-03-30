@@ -60,7 +60,7 @@ const alpTrainingClasses = [
     title: "ALP Classes",
     price: "$497/mo",
     description: "Power Hour | Contractor School | Sales & Marketing School",
-    link: "https://altitudelogicpressure.com",
+    link: "https://altitudelogicpressure.com/programs",
     icon: "graduation" as const,
     iconImage: "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/card_icon_classes-iwNHtAUfyVJybqsSnMeRms.webp",
   },
