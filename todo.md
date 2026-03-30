@@ -225,3 +225,7 @@
 - [x] Add Twitter card meta tags
 - [x] Update meta description to match construction consulting positioning
 - [x] Add ALP logo as favicon (ico, apple-touch-icon, 192px)
+
+## Credibility Line & Analytics Tracking
+- [x] Add "Trusted by 500+ contractors" credibility line below hero
+- [x] Add Umami analytics click event tracking to all card clicks

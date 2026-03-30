@@ -207,12 +207,25 @@ export function ProductCard({
     return <div className="cursor-default">{cardContent}</div>;
   }
 
+  const handleClick = () => {
+    // Umami analytics event tracking
+    if (typeof window !== 'undefined' && (window as any).umami) {
+      (window as any).umami.track('card_click', {
+        title,
+        price,
+        link,
+        category: isFree ? 'free_resource' : isApplication ? 'advisory' : 'program',
+      });
+    }
+  };
+
   return (
     <a
       href={link}
       target="_blank"
       rel="noopener noreferrer"
       className="block no-underline"
+      onClick={handleClick}
     >
       {cardContent}
     </a>

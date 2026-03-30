@@ -146,6 +146,17 @@ export function HeroSection({ heroImage }: HeroSectionProps) {
             >
               $2.5 Billion in Construction Experience
             </motion.p>
+
+            {/* Credibility Line */}
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.25, 0.4, 0.25, 1], delay: 1.6 }}
+              className="mt-3 text-cream-muted/60 text-xs sm:text-sm font-medium tracking-wide"
+              style={{ fontFamily: "'DM Sans', sans-serif" }}
+            >
+              Trusted by 500+ Contractors
+            </motion.p>
           </motion.div>
         </div>
       </div>
