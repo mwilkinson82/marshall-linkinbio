@@ -49,7 +49,7 @@ const eliteTraining = [
     title: "The Contracting Circle",
     price: "$497/mo",
     description: "Elite contractor community & execution engine",
-    link: "/circle",
+    link: "https://alpcontractorcircle.com",
     icon: "circle" as const,
     isPopular: true,
   },
