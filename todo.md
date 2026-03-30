@@ -185,3 +185,13 @@
 - [x] Add Q2 Framework Guide card above 15 Strategic Sales Questions in Free Resources section
 - [x] Include green FREE badge matching existing style
 - [x] Link to https://alpcontractorcircle.com/q2
+
+## Home Page Restructure — Section Reordering
+- [x] Move Free Resources section to top (right below hero)
+- [x] Break Programs & Resources into subsections: Elite Training & Community, ALP Training Classes, Publications, Coming Soon
+- [x] Elite Training & Community subsection: The Contracting Circle
+- [x] ALP Training Classes subsection: ALP Classes, ALP Sales Training
+- [x] Publications subsection: ALP Handbook
+- [x] Coming Soon subsection: ALP Contracting Templates
+- [x] Create new main section header: Private Advisory & Consulting with ALP Private Advisory card
+- [x] Reorder page: Hero → Free Resources → Programs & Resources (with subsections) → Private Advisory & Consulting → Social → Footer
