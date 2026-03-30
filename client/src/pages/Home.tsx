@@ -93,7 +93,7 @@ const privateAdvisory = [
     title: "ALP Private Advisory",
     price: "",
     description: "Fully confidential 1-on-1 strategic consulting with Marshall",
-    link: "https://altitudelogicpressure.com",
+    link: "https://altitudelogicpressure.com/coaching",
     icon: "diamond" as const,
     iconImage: "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/card_icon_advisory-F95cG7yKhuZ2ETbBtKcwe9.webp",
     badge: "Apply",
