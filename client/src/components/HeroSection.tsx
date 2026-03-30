@@ -129,7 +129,7 @@ export function HeroSection({ heroImage }: HeroSectionProps) {
               className="mt-3 text-sm sm:text-base font-medium tracking-[0.15em] uppercase text-ember"
               style={{ fontFamily: "'Sora', sans-serif" }}
             >
-              CEO, Altitude Logic Pressure
+              CEO, ALP
             </motion.p>
 
             {/* Divider Line */}
