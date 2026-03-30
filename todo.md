@@ -199,3 +199,13 @@
 ## Most Popular Badges
 - [x] Add green "Most Popular" badge to The Contracting Circle card
 - [x] Add green "Most Popular" badge to ALP Private Advisory card
+
+## Remove Free Badges from Coming Soon Cards
+- [ ] Remove "Free" badge from "5 Closing Mistakes Costing You $100K+" card
+- [ ] Remove "Free" badge from "The Contractor's Scaling Checklist" card
+
+## Remove Coming Soon Cards
+- [x] Remove "5 Closing Mistakes Costing You $100K+" card (Coming Soon) from Free Resources
+- [x] Remove "The Contractor's Scaling Checklist" card (Coming Soon) from Free Resources
+- [x] Remove "ALP Contracting Templates" card (Coming Soon) from Programs & Resources
+- [x] Remove the "Coming Soon" subsection entirely

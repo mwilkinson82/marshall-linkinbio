@@ -39,26 +39,7 @@ const freeResources = [
     badge: "Free",
     isFree: true,
   },
-  {
-    title: "5 Closing Mistakes Costing You $100K+",
-    price: "FREE",
-    description: "The sales errors killing your close rate — and how to fix them",
-    link: "#",
-    icon: "chart" as const,
-    badge: "Free",
-    isFree: true,
-    comingSoon: true,
-  },
-  {
-    title: "The Contractor's Scaling Checklist",
-    price: "FREE",
-    description: "Systems, hiring & margins — the ops playbook for growth",
-    link: "#",
-    icon: "clipboard" as const,
-    badge: "Free",
-    isFree: true,
-    comingSoon: true,
-  },
+
 ];
 
 // ─── Programs & Resources — Subsections ────────────────────────────────────
@@ -104,16 +85,7 @@ const publications = [
   },
 ];
 
-const comingSoonItems = [
-  {
-    title: "ALP Contracting Templates",
-    price: "",
-    description: "Battle-tested docs & spreadsheets",
-    link: "#",
-    icon: "file" as const,
-    comingSoon: true,
-  },
-];
+
 
 // ─── Private Advisory & Consulting ─────────────────────────────────────────
 const privateAdvisory = [
@@ -231,11 +203,7 @@ export default function Home() {
             <CardList items={publications} />
           </div>
 
-          {/* Subsection: Coming Soon */}
-          <div className="mt-6">
-            <SubsectionHeader label="Coming Soon" />
-            <CardList items={comingSoonItems} />
-          </div>
+
         </div>
       </section>
 
