@@ -237,6 +237,26 @@
   box-shadow: 0 0 30px 0 oklch(0.72 0.12 55 / 0.15), 0 0 60px 0 oklch(0.72 0.12 55 / 0.05);
 }
 
+/* Revenue ticker infinite scroll */
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-track {
+  animation: ticker-scroll 30s linear infinite;
+  will-change: transform;
+}
+
+/* Pause on hover for readability */
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
 /* Hide scrollbar but keep functionality */
 .no-scrollbar::-webkit-scrollbar {
   display: none;

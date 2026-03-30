@@ -16,6 +16,7 @@ import { GradientBar } from "@/components/GradientBar";
 import { SocialLinks } from "@/components/SocialLinks";
 import { Footer } from "@/components/Footer";
 import { SectionDivider } from "@/components/SectionDivider";
+import { RevenueTicker } from "@/components/RevenueTicker";
 
 const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/marshall_hero_6c478c8c.webp";
 
@@ -171,6 +172,9 @@ export default function Home() {
 
       {/* Section Divider */}
       <SectionDivider />
+
+      {/* Revenue Scaling Ticker */}
+      <RevenueTicker />
 
       {/* ═══════════════════════════════════════════════════════════════════
           1. FREE RESOURCES  (first thing below hero)

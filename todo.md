@@ -229,3 +229,8 @@
 ## Credibility Line & Analytics Tracking
 - [x] Add "Trusted by 500+ contractors" credibility line below hero
 - [x] Add Umami analytics click event tracking to all card clicks
+
+## Revenue Scaling Ticker
+- [x] Pull ticker content from alpcontractorcircle.com
+- [x] Build ticker component matching Contracting Circle style
+- [x] Wire into Home.tsx between hero and Free Resources
