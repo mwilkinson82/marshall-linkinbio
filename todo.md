@@ -209,3 +209,7 @@
 - [x] Remove "The Contractor's Scaling Checklist" card (Coming Soon) from Free Resources
 - [x] Remove "ALP Contracting Templates" card (Coming Soon) from Programs & Resources
 - [x] Remove the "Coming Soon" subsection entirely
+
+## Badge & Icon Updates
+- [x] Change ALP Private Advisory "Most Popular" badge from green to gold/amber
+- [ ] Swap in custom branded icon for Contracting Circle card (waiting on Marshall's image)

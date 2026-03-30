@@ -98,7 +98,7 @@ const privateAdvisory = [
     iconImage: "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/card_icon_advisory-F95cG7yKhuZ2ETbBtKcwe9.webp",
     badge: "Apply",
     isApplication: true,
-    isPopular: true,
+    isPopularGold: true,
   },
 ];
 
