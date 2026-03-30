@@ -29,6 +29,7 @@ const freeResources = [
     icon: "download" as const,
     badge: "Free",
     isFree: true,
+    isNew: true,
   },
   {
     title: "15 Strategic Sales Questions",
@@ -51,6 +52,7 @@ const eliteTraining = [
     description: "Elite contractor community & execution engine",
     link: "https://alpcontractorcircle.com",
     icon: "circle" as const,
+    iconImage: "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/contractor_circle_icon_v5_95bd1469.webp",
     isPopular: true,
   },
 ];

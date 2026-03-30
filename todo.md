@@ -212,7 +212,7 @@
 
 ## Badge & Icon Updates
 - [x] Change ALP Private Advisory "Most Popular" badge from green to gold/amber
-- [ ] Swap in custom branded icon for Contracting Circle card (waiting on Marshall's image)
+- [x] Swap in custom branded icon for Contracting Circle card
 
 ## SEO Fixes for Home Page
 - [x] Add keywords meta tag with relevant terms including "Marshall Wilkinson"

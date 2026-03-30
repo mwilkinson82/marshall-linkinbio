@@ -24,6 +24,7 @@ interface ProductCardProps {
   isApplication?: boolean;
   isPopular?: boolean;
   isPopularGold?: boolean;
+  isNew?: boolean;
   index: number;
 }
 
@@ -54,6 +55,7 @@ export function ProductCard({
   isApplication = false,
   isPopular = false,
   isPopularGold = false,
+  isNew = false,
   index,
 }: ProductCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -140,6 +142,14 @@ export function ProductCard({
               >
                 <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 Most Popular
+              </span>
+            )}
+            {isNew && !comingSoon && (
+              <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-sky-500/15 border border-sky-500/25 text-sky-400"
+                style={{ fontFamily: "'Sora', sans-serif" }}
+              >
+                <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
+                New
               </span>
             )}
             {isPopularGold && !comingSoon && (
