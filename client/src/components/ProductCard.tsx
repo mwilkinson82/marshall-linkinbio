@@ -22,6 +22,7 @@ interface ProductCardProps {
   badge?: string;
   isFree?: boolean;
   isApplication?: boolean;
+  isPopular?: boolean;
   index: number;
 }
 
@@ -50,6 +51,7 @@ export function ProductCard({
   badge,
   isFree = false,
   isApplication = false,
+  isPopular = false,
   index,
 }: ProductCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -128,6 +130,14 @@ export function ProductCard({
               >
                 <Lock className="w-2.5 h-2.5" />
                 Soon
+              </span>
+            )}
+            {isPopular && !comingSoon && (
+              <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-emerald-500/15 border border-emerald-500/25 text-emerald-400"
+                style={{ fontFamily: "'Sora', sans-serif" }}
+              >
+                <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                Most Popular
               </span>
             )}
             {badge && !comingSoon && (

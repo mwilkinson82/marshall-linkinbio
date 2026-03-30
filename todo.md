@@ -195,3 +195,7 @@
 - [x] Coming Soon subsection: ALP Contracting Templates
 - [x] Create new main section header: Private Advisory & Consulting with ALP Private Advisory card
 - [x] Reorder page: Hero → Free Resources → Programs & Resources (with subsections) → Private Advisory & Consulting → Social → Footer
+
+## Most Popular Badges
+- [x] Add green "Most Popular" badge to The Contracting Circle card
+- [x] Add green "Most Popular" badge to ALP Private Advisory card
