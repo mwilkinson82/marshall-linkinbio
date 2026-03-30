@@ -219,3 +219,9 @@
 - [x] Add H2 headings to section headers
 - [x] Fix page title to be between 30-60 characters
 - [x] Add alt text to all 4 images missing it
+
+## Open Graph Social Preview Cards
+- [x] Add og:title, og:description, og:image, og:url meta tags
+- [x] Add Twitter card meta tags
+- [x] Update meta description to match construction consulting positioning
+- [x] Add ALP logo as favicon (ico, apple-touch-icon, 192px)
