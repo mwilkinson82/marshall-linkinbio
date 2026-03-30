@@ -111,7 +111,7 @@ export function ProductCard({
         {/* Icon */}
         <div className="flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center overflow-hidden group-hover:border-ember/15 transition-colors duration-400">
           {iconImage ? (
-            <img src={iconImage} alt="" className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />
+            <img src={iconImage} alt={`${title} icon`} className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />
           ) : (
             <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 text-ember" strokeWidth={1.5} />
           )}

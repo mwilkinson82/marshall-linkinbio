@@ -213,3 +213,9 @@
 ## Badge & Icon Updates
 - [x] Change ALP Private Advisory "Most Popular" badge from green to gold/amber
 - [ ] Swap in custom branded icon for Contracting Circle card (waiting on Marshall's image)
+
+## SEO Fixes for Home Page
+- [x] Add keywords meta tag with relevant terms including "Marshall Wilkinson"
+- [x] Add H2 headings to section headers
+- [x] Fix page title to be between 30-60 characters
+- [x] Add alt text to all 4 images missing it

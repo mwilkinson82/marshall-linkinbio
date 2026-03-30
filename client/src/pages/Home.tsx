@@ -112,12 +112,12 @@ function SectionHeader({ label }: { label: string }) {
       transition={{ duration: 0.6 }}
       className="text-center mb-8"
     >
-      <p
+      <h2
         className="text-sm font-medium tracking-[0.2em] uppercase text-ember mb-2"
         style={{ fontFamily: "'Sora', sans-serif" }}
       >
         {label}
-      </p>
+      </h2>
       <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-ember to-transparent mx-auto" />
     </motion.div>
   );
