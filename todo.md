@@ -238,3 +238,7 @@
 ## Estimating Checklist Free Resource Card
 - [x] Add Estimating Checklist card as first item in Free Resources
 - [x] Link to https://alpcontractorcircle.com/estimating
+
+## Badge Layout Fix
+- [x] Fix Q2 Framework Guide badges to display on second line below title (matching Estimator's Checklist layout on mobile)
+- [x] Rename "The Contracting Circle" to "The Contractor Circle" on the card

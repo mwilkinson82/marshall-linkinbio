@@ -58,7 +58,7 @@ const freeResources = [
 
 const eliteTraining = [
   {
-    title: "The Contracting Circle",
+    title: "The Contractor Circle",
     price: "$497/mo",
     description: "Elite contractor community & execution engine",
     link: "https://alpcontractorcircle.com",

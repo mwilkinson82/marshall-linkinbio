@@ -121,60 +121,62 @@ export function ProductCard({
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+          <div className="mb-0.5">
             <h3
               className="text-[15px] sm:text-base font-semibold text-cream"
               style={{ fontFamily: "'Sora', sans-serif" }}
             >
               {title}
             </h3>
-            {comingSoon && (
-              <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-ember/10 border border-ember/20 text-ember text-[10px] font-semibold uppercase tracking-wider"
-                style={{ fontFamily: "'Sora', sans-serif" }}
-              >
-                <Lock className="w-2.5 h-2.5" />
-                Soon
-              </span>
-            )}
-            {isPopular && !comingSoon && (
-              <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-emerald-500/15 border border-emerald-500/25 text-emerald-400"
-                style={{ fontFamily: "'Sora', sans-serif" }}
-              >
-                <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                Most Popular
-              </span>
-            )}
-            {isNew && !comingSoon && (
-              <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-sky-500/15 border border-sky-500/25 text-sky-400"
-                style={{ fontFamily: "'Sora', sans-serif" }}
-              >
-                <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
-                New
-              </span>
-            )}
-            {isPopularGold && !comingSoon && (
-              <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-amber-500/15 border border-amber-500/30 text-amber-400"
-                style={{ fontFamily: "'Sora', sans-serif" }}
-              >
-                <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                Most Popular
-              </span>
-            )}
-            {badge && !comingSoon && (
-              <span className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
-                isFree 
-                  ? 'bg-emerald-500/15 border border-emerald-500/25 text-emerald-400'
-                  : isApplication
-                    ? 'bg-sky-500/15 border border-sky-500/25 text-sky-400'
-                    : 'bg-ember/10 border border-ember/20 text-ember'
-              }`}
-                style={{ fontFamily: "'Sora', sans-serif" }}
-              >
-                {isFree && <Gift className="w-2.5 h-2.5" />}
-                {isApplication && <Send className="w-2.5 h-2.5" />}
-                {badge}
-              </span>
-            )}
+            <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+              {comingSoon && (
+                <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-ember/10 border border-ember/20 text-ember text-[10px] font-semibold uppercase tracking-wider"
+                  style={{ fontFamily: "'Sora', sans-serif" }}
+                >
+                  <Lock className="w-2.5 h-2.5" />
+                  Soon
+                </span>
+              )}
+              {isPopular && !comingSoon && (
+                <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-emerald-500/15 border border-emerald-500/25 text-emerald-400"
+                  style={{ fontFamily: "'Sora', sans-serif" }}
+                >
+                  <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  Most Popular
+                </span>
+              )}
+              {isNew && !comingSoon && (
+                <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-sky-500/15 border border-sky-500/25 text-sky-400"
+                  style={{ fontFamily: "'Sora', sans-serif" }}
+                >
+                  <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
+                  New
+                </span>
+              )}
+              {isPopularGold && !comingSoon && (
+                <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-amber-500/15 border border-amber-500/30 text-amber-400"
+                  style={{ fontFamily: "'Sora', sans-serif" }}
+                >
+                  <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  Most Popular
+                </span>
+              )}
+              {badge && !comingSoon && (
+                <span className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
+                  isFree 
+                    ? 'bg-emerald-500/15 border border-emerald-500/25 text-emerald-400'
+                    : isApplication
+                      ? 'bg-sky-500/15 border border-sky-500/25 text-sky-400'
+                      : 'bg-ember/10 border border-ember/20 text-ember'
+                }`}
+                  style={{ fontFamily: "'Sora', sans-serif" }}
+                >
+                  {isFree && <Gift className="w-2.5 h-2.5" />}
+                  {isApplication && <Send className="w-2.5 h-2.5" />}
+                  {badge}
+                </span>
+              )}
+            </div>
           </div>
           <p className="text-[13px] sm:text-sm text-cream-muted/80 leading-snug line-clamp-2">
             {description}
