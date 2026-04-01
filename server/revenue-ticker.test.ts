@@ -51,3 +51,53 @@ describe("RevenueTicker data", () => {
     expect(items.slice(0, 5)).toEqual(items.slice(5, 10));
   });
 });
+
+// Free Resources card data verification
+const FREE_RESOURCES = [
+  {
+    title: "The Estimator's Checklist",
+    price: "FREE",
+    link: "https://alpcontractorcircle.com/estimating",
+    isFree: true,
+    isNew: true,
+  },
+  {
+    title: "Q2 Framework Guide",
+    price: "FREE",
+    link: "https://alpcontractorcircle.com/q2",
+    isFree: true,
+    isNew: true,
+  },
+  {
+    title: "15 Strategic Sales Questions",
+    price: "FREE",
+    link: "https://alpsalestraining.com/fifteenquestions",
+    isFree: true,
+  },
+];
+
+describe("Free Resources cards", () => {
+  it("should have 3 free resource cards", () => {
+    expect(FREE_RESOURCES).toHaveLength(3);
+  });
+
+  it("Estimating Checklist should be the first card", () => {
+    expect(FREE_RESOURCES[0].title).toBe("The Estimator's Checklist");
+  });
+
+  it("Estimating Checklist should link to the landing page", () => {
+    expect(FREE_RESOURCES[0].link).toBe("https://alpcontractorcircle.com/estimating");
+  });
+
+  it("Estimating Checklist should be marked as free and new", () => {
+    expect(FREE_RESOURCES[0].isFree).toBe(true);
+    expect(FREE_RESOURCES[0].isNew).toBe(true);
+  });
+
+  it("all free resources should have valid links", () => {
+    for (const resource of FREE_RESOURCES) {
+      expect(resource.link).toMatch(/^https:\/\//);
+      expect(resource.price).toBe("FREE");
+    }
+  });
+});

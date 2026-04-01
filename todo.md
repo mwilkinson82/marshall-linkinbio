@@ -234,3 +234,7 @@
 - [x] Pull ticker content from alpcontractorcircle.com
 - [x] Build ticker component matching Contracting Circle style
 - [x] Wire into Home.tsx between hero and Free Resources
+
+## Estimating Checklist Free Resource Card
+- [x] Add Estimating Checklist card as first item in Free Resources
+- [x] Link to https://alpcontractorcircle.com/estimating
