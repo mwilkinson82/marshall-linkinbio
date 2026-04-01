@@ -23,6 +23,16 @@ const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8s
 // ─── Free Resources ────────────────────────────────────────────────────────
 const freeResources = [
   {
+    title: "The Estimator's Checklist",
+    price: "FREE",
+    description: "Stop estimating from memory. A systematic checklist to build accurate, consistent estimates every time — so you stop leaving money on the table.",
+    link: "https://alpcontractorcircle.com/estimating",
+    icon: "download" as const,
+    badge: "Free",
+    isFree: true,
+    isNew: true,
+  },
+  {
     title: "Q2 Framework Guide",
     price: "FREE",
     description: "A six-page framework to help you turn your first quarter lessons into second quarter momentum",
