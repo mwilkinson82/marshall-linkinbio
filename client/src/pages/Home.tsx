@@ -23,6 +23,16 @@ const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8s
 // ─── Free Resources ────────────────────────────────────────────────────────
 const freeResources = [
   {
+    title: "The Three Silos Framework",
+    price: "FREE",
+    description: "Every business runs on three things: Attention, People, Process. This framework shows you which silo is broken and exactly where to focus.",
+    link: "https://alpcontractorcircle.com/silos",
+    icon: "download" as const,
+    badge: "Free",
+    isFree: true,
+    isNew: true,
+  },
+  {
     title: "The Estimator's Checklist",
     price: "FREE",
     description: "Stop estimating from memory. A systematic checklist to build accurate, consistent estimates every time — so you stop leaving money on the table.",
@@ -37,16 +47,6 @@ const freeResources = [
     price: "FREE",
     description: "A six-page framework to help you turn your first quarter lessons into second quarter momentum",
     link: "https://alpcontractorcircle.com/q2",
-    icon: "download" as const,
-    badge: "Free",
-    isFree: true,
-    isNew: true,
-  },
-  {
-    title: "The Three Silos Framework",
-    price: "FREE",
-    description: "A first principles approach to scaling. Stop overcomplicating your business — master the three things that actually matter.",
-    link: "https://alpcontractorcircle.com/silos",
     icon: "download" as const,
     badge: "Free",
     isFree: true,
