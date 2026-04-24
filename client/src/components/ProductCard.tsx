@@ -25,6 +25,7 @@ interface ProductCardProps {
   isPopular?: boolean;
   isPopularGold?: boolean;
   isNew?: boolean;
+  isGoldHighlight?: boolean;
   index: number;
 }
 
@@ -56,6 +57,7 @@ export function ProductCard({
   isPopular = false,
   isPopularGold = false,
   isNew = false,
+  isGoldHighlight = false,
   index,
 }: ProductCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -91,10 +93,9 @@ export function ProductCard({
       className={`
         relative group rounded-xl overflow-hidden
         bg-[#12141A]/80 backdrop-blur-xl
-        border border-white/[0.06]
-        ${comingSoon 
-          ? "opacity-60" 
-          : "hover:border-ember/25 hover:shadow-[0_0_40px_-5px_rgba(212,145,92,0.18)]"
+        ${isGoldHighlight
+          ? "border border-amber-500/40 shadow-[0_0_24px_-4px_rgba(245,158,11,0.25)]"
+          : `border border-white/[0.06] ${comingSoon ? "opacity-60" : "hover:border-ember/25 hover:shadow-[0_0_40px_-5px_rgba(212,145,92,0.18)]"}`
         }
       `}
       style={{ willChange: "transform, opacity" }}
@@ -104,8 +105,11 @@ export function ProductCard({
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-ember/[0.06] via-transparent to-ember/[0.02] pointer-events-none" />
       )}
 
-      {/* Top edge highlight on hover */}
-      {!comingSoon && (
+      {/* Top edge highlight */}
+      {isGoldHighlight && (
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-amber-600/0 via-amber-400 to-amber-600/0 pointer-events-none" />
+      )}
+      {!comingSoon && !isGoldHighlight && (
         <div className="absolute top-0 left-[10%] right-[10%] h-[1px] bg-gradient-to-r from-transparent via-ember/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
       )}
 
