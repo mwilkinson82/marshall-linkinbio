@@ -86,9 +86,9 @@ const alpTrainingClasses = [
     iconImage: "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/card_icon_classes-iwNHtAUfyVJybqsSnMeRms.webp",
   },
   {
-    title: "ALP Sales Training",
+    title: "ALP Outdoor Living Sales Training",
     price: "$297",
-    description: "Master the art of closing",
+    description: "The complete course to master the art of closing",
     link: "https://alpsalestraining.com",
     icon: "target" as const,
     iconImage: "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/card_icon_training-Vq6uRYQ3JHcnEERpwNTot3.webp",
