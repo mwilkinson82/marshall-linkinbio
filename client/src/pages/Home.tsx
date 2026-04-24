@@ -43,6 +43,16 @@ const freeResources = [
     isNew: true,
   },
   {
+    title: "The Three Silos Framework",
+    price: "FREE",
+    description: "A first principles approach to scaling. Stop overcomplicating your business — master the three things that actually matter.",
+    link: "https://alpcontractorcircle.com/silos",
+    icon: "download" as const,
+    badge: "Free",
+    isFree: true,
+    isNew: true,
+  },
+  {
     title: "15 Strategic Sales Questions",
     price: "FREE",
     description: "The discovery framework for closing high-ticket outdoor living projects",
