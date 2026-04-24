@@ -68,7 +68,7 @@ const eliteTraining = [
   {
     title: "The Contractor Circle",
     price: "$497/mo",
-    description: "Elite contractor community & execution engine",
+    description: "Weekly calls, accountability, and a network of contractors scaling together",
     link: "https://alpcontractorcircle.com",
     icon: "circle" as const,
     iconImage: "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/contractor_circle_icon_v5_95bd1469.webp",
@@ -86,6 +86,9 @@ const alpTrainingClasses = [
     icon: "graduation" as const,
     iconImage: "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8sHs44hWg957N49MHxas2/card_icon_classes-iwNHtAUfyVJybqsSnMeRms.webp",
   },
+];
+
+const alpCourses = [
   {
     title: "ALP Outdoor Living Sales Training",
     price: "$297",
@@ -121,6 +124,7 @@ const privateAdvisory = [
     badge: "Apply",
     isApplication: true,
     isPopularGold: true,
+    isGoldHighlight: true,
   },
 ];
 
@@ -220,6 +224,12 @@ export default function Home() {
           <div className="mt-6">
             <SubsectionHeader label="ALP Training Classes" />
             <CardList items={alpTrainingClasses} />
+          </div>
+
+          {/* Subsection: ALP Courses */}
+          <div className="mt-6">
+            <SubsectionHeader label="ALP Courses" />
+            <CardList items={alpCourses} />
           </div>
 
           {/* Subsection: Publications */}
