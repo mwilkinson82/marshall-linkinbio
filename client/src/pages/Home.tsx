@@ -40,7 +40,6 @@ const freeResources = [
     icon: "download" as const,
     badge: "Free",
     isFree: true,
-    isNew: true,
   },
   {
     title: "Q2 Framework Guide",
@@ -50,7 +49,6 @@ const freeResources = [
     icon: "download" as const,
     badge: "Free",
     isFree: true,
-    isNew: true,
   },
   {
     title: "15 Strategic Sales Questions",
