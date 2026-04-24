@@ -23,7 +23,7 @@ const HERO_IMAGE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663332724241/F8s
 // ─── Free Resources ────────────────────────────────────────────────────────
 const freeResources = [
   {
-    title: "The Three Silos Framework",
+    title: "The Holy Grail of Scaling",
     price: "FREE",
     description: "Every business runs on three things: Attention, People, Process. This framework shows you which silo is broken and exactly where to focus.",
     link: "https://alpcontractorcircle.com/silos",
